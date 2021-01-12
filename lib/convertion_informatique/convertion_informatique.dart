@@ -11,128 +11,71 @@ class ConvertionInformatique extends StatefulWidget {
 }
 
 class _ConvertionInformatique extends State<ConvertionInformatique> {
-  String labelToConvert = 'Octet - O', labelConvert = 'Kilooctet - KO';
-  double valueToConvert, valueConvert, valueOctet;
-  TextEditingController textToConvert, textConvert;
+List<String> labels = [
+    'Octet - O',
+    'Kilooctet - KO',
+    'Mégaoctet - MO',
+    'Gigaoctet - GO',
+    'Téraoctet - TO',
+    'Pétaoctet - PO'
+  ];
+  String inLabelValue, outLabelValue;
+  TextEditingController inController, outController;
+  double inRes, outRes;
 
-  /*
   @override
   void initState() {
-    textToConvert = TextEditingController();
-    textConvert = TextEditingController();
     super.initState();
+     inLabelValue = labels[0];
+     outLabelValue = labels[1];
+     inController = TextEditingController();
+     outController = TextEditingController();
   }
-  */
 
+  void fromInToOut(){
+    double resInOctet = toOctet(inRes, inLabelValue);
+    outController.text = toConvert(resInOctet, outLabelValue).toString();
+  }
 
+  void fromOutToIn(){
+    double resInOctet = toOctet(outRes, outLabelValue);
+    inController.text = toConvert(resInOctet, inLabelValue).toString();
+  }
 
-  double _toConvert(double valueToConvert) {
-    valueOctet = valueToConvert;
-    switch (labelToConvert) {
-      case 'Octet - O':
-        break;
-
+  double toOctet(double value, String label){
+    switch (label) {
       case 'Kilooctet - KO':
-        valueOctet = valueToConvert * math.pow(10, 3);
-        break;
-
+        return value * math.pow(10, 3);
       case 'Mégaoctet - MO':
-        valueOctet = valueToConvert * math.pow(10, 6);
-        break;
-
+        return value * math.pow(10, 6);
       case 'Gigaoctet - GO':
-        valueOctet = valueToConvert * math.pow(10, 9);
-        break;
-
+        return value * math.pow(10, 9);
       case 'Téraoctet - TO':
-        valueOctet = valueToConvert * math.pow(10, 12);
-        break;
-
+        return value * math.pow(10, 12);
       case 'Pétaoctet - PO':
-        valueOctet = valueToConvert * math.pow(10, 15);
-        break;
-
+        return value * math.pow(10, 15);
       default:
-        print("Invalid choice");
-        break;
-    }
-    switch (labelConvert) {
-      case 'Octet - O':
-        return valueOctet;
-
-      case 'Kilooctet - KO':
-        return valueOctet / math.pow(10, 3);
-
-      case 'Mégaoctet - MO':
-        return valueOctet / math.pow(10, 6);
-
-      case 'Gigaoctet - GO':
-        return valueOctet / math.pow(10, 9);
-
-      case 'Téraoctet - TO':
-        return valueOctet / math.pow(10, 12);
-
-      case 'Pétaoctet - PO':
-        return valueOctet / math.pow(10, 15);
-
-      default:
-        return 0;
+       return value;
     }
   }
 
-  double _convert(double valueConvert) {
-    valueOctet = valueConvert;
-    switch (labelConvert) {
-      case 'Octet - O':
-        break;
-
+  double toConvert(double value, String label){
+    switch (label) {
       case 'Kilooctet - KO':
-        valueOctet = valueConvert * math.pow(10, 3);
-        break;
-
+        return value / math.pow(10, 3);
       case 'Mégaoctet - MO':
-        valueOctet = valueConvert * math.pow(10, 6);
-        break;
-
+        return value / math.pow(10, 6);
       case 'Gigaoctet - GO':
-        valueOctet = valueConvert * math.pow(10, 9);
-        break;
-
+        return value / math.pow(10, 9);
       case 'Téraoctet - TO':
-        valueOctet = valueConvert * math.pow(10, 12);
-        break;
-
+        return value / math.pow(10, 12);
       case 'Pétaoctet - PO':
-        valueOctet = valueConvert * math.pow(10, 15);
-        break;
-
+        return value / math.pow(10, 15);
       default:
-        print("Invalid choice");
-        break;
-    }
-    switch (labelToConvert) {
-      case 'Octet - O':
-        return valueOctet;
-
-      case 'Kilooctet - KO':
-        return valueOctet / math.pow(10, 3);
-
-      case 'Mégaoctet - MO':
-        return valueOctet / math.pow(10, 6);
-
-      case 'Gigaoctet - GO':
-        return valueOctet / math.pow(10, 9);
-
-      case 'Téraoctet - TO':
-        return valueOctet / math.pow(10, 12);
-
-      case 'Pétaoctet - PO':
-        return valueOctet / math.pow(10, 15);
-
-      default:
-        return 0;
+        return value;
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +89,7 @@ class _ConvertionInformatique extends State<ConvertionInformatique> {
           children: [
             //Menu déroulant des valeurs entrantes
             DropdownButton<String>(
-              value: labelToConvert,
+              value: inLabelValue,
               icon: Icon(Icons.arrow_downward),
               iconSize: 24,
               elevation: 16,
@@ -155,19 +98,13 @@ class _ConvertionInformatique extends State<ConvertionInformatique> {
                 height: 2,
                 color: Colors.blueAccent,
               ),
-              onChanged: (String valueToC) {
+              onChanged: (v) {
                 setState(() {
-                  labelToConvert = valueToC;
+                  inLabelValue = v;
+                  fromInToOut();
                 });
               },
-              items: <String>[
-                'Octet - O',
-                'Kilooctet - KO',
-                'Mégaoctet - MO',
-                'Gigaoctet - GO',
-                'Téraoctet - TO',
-                'Pétaoctet - PO'
-              ].map<DropdownMenuItem<String>>((String value) {
+              items: labels.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
@@ -180,22 +117,20 @@ class _ConvertionInformatique extends State<ConvertionInformatique> {
               width: 200,
               height: 60,
               child: TextField(
-                onChanged: (String valueToC) {
+                onChanged: (val) {
                   setState(() {
-                    print(_toConvert(double.parse(valueToC)).toString());
-                    textConvert.text = _toConvert(double.parse(valueToC)).toString();
-                    print(textConvert.text);
-                    textToConvert.selection = TextSelection.fromPosition(TextPosition(offset: textToConvert.text.length));
+                    inRes = double.parse(val);
+                    fromInToOut();
                   });
                 },
-                controller:textToConvert,
+                controller:inController,
                 decoration: new InputDecoration(labelText: "Valeur Entrante:"),
               ),
             ),
 
             //Menu déroulant des valeurs sortantes
             DropdownButton<String>(
-              value: labelConvert,
+              value: outLabelValue,
               icon: Icon(Icons.arrow_downward),
               iconSize: 24,
               elevation: 16,
@@ -204,19 +139,13 @@ class _ConvertionInformatique extends State<ConvertionInformatique> {
                 height: 2,
                 color: Colors.blueAccent,
               ),
-              onChanged: (String valueC) {
+              onChanged: (v) {
                 setState(() {
-                  labelConvert = valueC;
+                  outLabelValue = v;
+                  fromOutToIn();
                 });
               },
-              items: <String>[
-                'Octet - O',
-                'Kilooctet - KO',
-                'Mégaoctet - MO',
-                'Gigaoctet - GO',
-                'Téraoctet - TO',
-                'Pétaoctet - PO'
-              ].map<DropdownMenuItem<String>>((String value) {
+              items: labels.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
@@ -229,13 +158,13 @@ class _ConvertionInformatique extends State<ConvertionInformatique> {
               width: 200,
               height: 60,
               child: TextField(
-                onChanged: (String valueC) {
+                onChanged: (val) {
                   setState(() {
-                    textToConvert.text = _convert(double.parse(valueC)).toString();
-                    textConvert.selection = TextSelection.fromPosition(TextPosition(offset: textConvert.text.length));
+                    outRes = double.parse(val);
+                    fromOutToIn();
                   });
                 },
-                controller:textConvert,
+                controller:outController,
                 decoration: new InputDecoration(labelText: "Valeur Sortante:"),
               ),
             ),
