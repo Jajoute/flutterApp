@@ -1,7 +1,17 @@
 
-import 'package:audioplayers/audioplayers.dart';
+
+import 'dart:io';
+
+
+
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+
+
+import 'custom/audio_cache.dart';
+import 'custom/audio_player.dart';
+
+
 
 
 class AudioPlayerPage extends StatefulWidget {
@@ -10,35 +20,48 @@ class AudioPlayerPage extends StatefulWidget {
 }
 
 class _AudioPlayerPageState extends State<AudioPlayerPage> {
+  AudioCache audioCache = AudioCache();
+  AudioPlayer advancedPlayer = AudioPlayer();
+
+
+  // AudioCache audioCache;
+  // AudioPlayer audioPlayer;
+  // Duration duration = Duration();
+  // Duration position = Duration();
+  // bool isSongPlaying = false;
+  // bool isPlaying = false;
+  //
+  // void see1ToSeconds(int second){
+  //   Duration newDuration = Duration(seconds: second);
+  //   audioPlayer.seek(newDuration);
+  // }
+  //
+  // @override
+  //   void initState() {
+  //     super.initState();
+  //     if (Platform.isIOS) {
+  //       if (audioCache.fixedPlayer != null) {
+  //         audioCache.fixedPlayer.startHeadlessService();
+  //       }
+  //     }
+  //   }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: IconButton(icon: Icon(Icons.play_arrow), onPressed: () async{
-        AudioPlayer audioPlayer = AudioPlayer();
-        int result = await audioPlayer.play('assets/audio2.mp3', isLocal: true);
-      }),),
+      body: Center(child: Row(
+        children: [
+          IconButton(icon: Icon(Icons.play_arrow), onPressed: () async{
+            audioCache.play('assets/audio.mp3');
+
+          }),
+          IconButton(icon: Icon(Icons.play_arrow), onPressed: () async{
+            // audioCache.clearCache();
+            // await advancedPlayer.stop();
+          }),
+        ],
+      ),),
     );
   }
 }
-
-//
-// class Test {
-//
-//   double octet;
-//
-//   double fromOctetToKilOctet(double octet) => octet / math.pow(10, 3);
-//   double fromOctetToMegaOctet(double octet) => octet / math.pow(10, 6);
-//   double fromOctetToGigaOctet(double octet) => octet / math.pow(10, 9);
-//   double fromOctetToTeraOctet(double octet) => octet / math.pow(10, 12);
-//   double fromOctetToPetaOctet(double octet) => octet / math.pow(10, 15);
-//
-//   double fromOctetToKilOctet(double octet) => octet / math.pow(10, 3);
-//   double fromOctetToMegaOctet(double octet) => octet / math.pow(10, 6);
-//   double fromOctetToGigaOctet(double octet) => octet / math.pow(10, 9);
-//   double fromOctetToTeraOctet(double octet) => octet / math.pow(10, 12);
-//   double fromOctetToPetaOctet(double octet) => octet / math.pow(10, 15);
-//
-//
-//   void tambouille()
-//
-// }
