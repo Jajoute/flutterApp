@@ -43,37 +43,42 @@ List<String> labels = [
   }
 
   double toOctet(double value, String label){
-    switch (label) {
-      case 'Kilooctet - KO':
-        return value * math.pow(10, 3);
-      case 'Mégaoctet - MO':
-        return value * math.pow(10, 6);
-      case 'Gigaoctet - GO':
-        return value * math.pow(10, 9);
-      case 'Téraoctet - TO':
-        return value * math.pow(10, 12);
-      case 'Pétaoctet - PO':
-        return value * math.pow(10, 15);
-      default:
-       return value;
+    if(value != null){
+      switch (label) {
+        case 'Octet - O':
+          return value;
+        case 'Kilooctet - KO':
+          return value * math.pow(10, 3);
+        case 'Mégaoctet - MO':
+          return value * math.pow(10, 6);
+        case 'Gigaoctet - GO':
+          return value * math.pow(10, 9);
+        case 'Téraoctet - TO':
+          return value * math.pow(10, 12);
+        case 'Pétaoctet - PO':
+          return value * math.pow(10, 15);
+      }
     }
   }
 
   double toConvert(double value, String label){
-    switch (label) {
-      case 'Kilooctet - KO':
-        return value / math.pow(10, 3);
-      case 'Mégaoctet - MO':
-        return value / math.pow(10, 6);
-      case 'Gigaoctet - GO':
-        return value / math.pow(10, 9);
-      case 'Téraoctet - TO':
-        return value / math.pow(10, 12);
-      case 'Pétaoctet - PO':
-        return value / math.pow(10, 15);
-      default:
-        return value;
-    }
+   if(value != null){
+     switch (label) {
+       case 'Octet - O':
+         return value;
+       case 'Kilooctet - KO':
+         return value / math.pow(10, 3);
+       case 'Mégaoctet - MO':
+         return value / math.pow(10, 6);
+       case 'Gigaoctet - GO':
+         return value / math.pow(10, 9);
+       case 'Téraoctet - TO':
+         return value / math.pow(10, 12);
+       case 'Pétaoctet - PO':
+         return value / math.pow(10, 15);
+     }
+   }
+
   }
 
 
@@ -101,7 +106,7 @@ List<String> labels = [
               onChanged: (v) {
                 setState(() {
                   inLabelValue = v;
-                  fromInToOut();
+                  fromOutToIn();
                 });
               },
               items: labels.map<DropdownMenuItem<String>>((String value) {
@@ -142,7 +147,7 @@ List<String> labels = [
               onChanged: (v) {
                 setState(() {
                   outLabelValue = v;
-                  fromOutToIn();
+                  fromInToOut();
                 });
               },
               items: labels.map<DropdownMenuItem<String>>((String value) {
