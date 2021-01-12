@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 void main() {
   runApp(MyApp());
@@ -11,19 +12,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
+
         primarySwatch: Colors.blue,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
+
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
@@ -34,15 +25,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -50,68 +32,176 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+   String dropDownValueToConvert = 'Unité à convertir';
+   String dropDownValueConverted = 'Convertir en';
+   double valueToConvert = 0;
+   double convertedValue = 0;
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
+
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+
+
+            //---Value To Convert---
+            TextField(
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Valeur à convertir'
+              ),
+
+              onChanged: (value){
+                setState(() {
+                  valueToConvert = double.parse(value);
+                });
+
+
+              },
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+
+            DropdownButton(
+              value : dropDownValueToConvert,
+              style: TextStyle(color: Colors.deepPurple),
+              onChanged: (String newValue) {
+                setState(() {
+                  dropDownValueToConvert = newValue;
+                });
+              },
+              items: <String>['Unité à convertir','km²','m²','cm²','hectare','acre'].map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
             ),
+
+
+
+            //----Converted Value----
+            DropdownButton(
+              value : dropDownValueConverted,
+              iconSize: 24,
+              elevation: 16,
+              style: TextStyle(color: Colors.deepPurple),
+              onChanged: (String newValue) {
+                setState(() {
+                  dropDownValueConverted = newValue;
+                });
+              },
+              items: <String>['Convertir en','km²','m²','cm²','hectare','acre'].map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+
+
+            TextField(
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  labelText: 'résultat'
+              ),
+
+              controller : TextEditingController(text: converter(valueToConvert,dropDownValueToConvert,dropDownValueConverted).toString()),
+
+
+            ),
+
+
+
+
+
           ],
+
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
-  }
+    }
+
+    double converter(double entryValue, String toConvert, String converted){
+      double result = 0;
+
+      switch(toConvert) {
+
+        case "km²": {
+          result = entryValue * 1000000;
+
+        }
+        break;
+
+        case "m²": {
+          result = entryValue * 1;
+        }
+        break;
+
+        case "cm²": {
+          result = entryValue * 0.001;
+        }
+        break;
+
+        case "hectare": {
+          result = entryValue * 10000;
+        }
+        break;
+
+        case "acre": {
+          result = entryValue * 4046.85642;
+        }
+        break;
+
+
+        default: { print("Invalid choice"); }
+        break;
+      }
+
+
+      switch(converted) {
+
+        case "km²": {
+          return result * 0.000001;
+        }
+        break;
+
+        case "m²": {
+          return result * 1;
+        }
+        break;
+
+        case "cm²": {
+          return result * 1000;
+        }
+        break;
+
+        case "hectare": {
+          return result * 0.00010;
+        }
+
+        case "acre": {
+          return result * 0.00025;
+        }
+
+
+        break;
+
+        default: {
+          return 0 ;
+        }
+        break;
+      }
+
+
+   }
+
+
 }
