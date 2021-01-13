@@ -21,12 +21,13 @@ class _ConvertionAires extends State<ConvertionAires> {
 
   @override
   void initState() {
-
     super.initState();
     inLabelValue = labels[0];
     outLabelValue = labels[1];
     inController = TextEditingController();
     outController = TextEditingController();
+    inRes = 0;
+    outRes = 0;
   }
 
 
@@ -89,7 +90,7 @@ class _ConvertionAires extends State<ConvertionAires> {
               child: TextField(
                 decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: 'Valeur à convertir'
+                    labelText: 'Valeur à convertir'
                 ),
                 onChanged: (v){
                   setState(() {
@@ -137,7 +138,7 @@ class _ConvertionAires extends State<ConvertionAires> {
               child: TextField(
                 decoration: InputDecoration(
                     border: InputBorder.none,
-                    labelText: 'résultat'
+                    labelText: 'Résultat'
                 ),
 
                 onChanged: (v){

@@ -18,8 +18,13 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => HomePage(),
+          '/us2': (context) => ConvertionInformatique('Convertion Informatique'),
+          '/us8': (context) => ConvertionAires('Convertion Aires'),
+        },
       debugShowCheckedModeBanner: false,
-      home:HomePage()
     );
   }
 }

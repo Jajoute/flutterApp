@@ -28,19 +28,21 @@ class _ConvertionInformatique extends State<ConvertionInformatique> {
     super.initState();
     inLabelValue = labels[0];
     outLabelValue = labels[1];
-    inController = TextEditingController();
-    outController = TextEditingController();
+    inController = TextEditingController(text: '');
+    outController = TextEditingController(text: '');
+    inRes = 0;
+    outRes = 0;
   }
 
   void fromInToOut() {
     double resInOctet = toOctet(inRes, inLabelValue);
-    outController.text = toConvert(resInOctet, outLabelValue).toString();
+    outController.text = resInOctet != null ? toConvert(resInOctet, outLabelValue).toString() : '';
     outRes = double.parse(outController.text);
   }
 
   void fromOutToIn() {
     double resInOctet = toOctet(outRes, outLabelValue);
-    inController.text = toConvert(resInOctet, inLabelValue).toString();
+    inController.text = resInOctet != null ? toConvert(resInOctet, inLabelValue).toString() : '';
     inRes = double.parse(inController.text);
   }
 
@@ -130,7 +132,7 @@ class _ConvertionInformatique extends State<ConvertionInformatique> {
                 },
                 controller: inController,
                 decoration:
-                    new InputDecoration(labelText: "Valeur Entrante: $inRes"),
+                    new InputDecoration(labelText: "Valeur Entrante: "),
               ),
             ),
 
@@ -172,7 +174,7 @@ class _ConvertionInformatique extends State<ConvertionInformatique> {
                 },
                 controller: outController,
                 decoration:
-                    new InputDecoration(labelText: "Valeur Sortante: $outRes"),
+                    new InputDecoration(labelText: "Valeur Sortante: "),
               ),
             ),
           ],
