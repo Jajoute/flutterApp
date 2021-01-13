@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_projet/convertion_temp/convertion_temp.dart';
 import 'package:flutter_projet/home/home_page.dart';
 
 import 'convertion_informatique/convertion_informatique.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       debugShowCheckedModeBanner: false,
-      home:HomePage()
+      home:ConvertionTemp('ff'),
     );
   }
 }
