@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class DatePage extends StatefulWidget {
@@ -9,20 +11,42 @@ class _DatePageState extends State<DatePage> {
   Duration _dateTime;
   DateTime _firstDate;
   DateTime _secondDate;
+  DateTime _start;
   String message="";
   bool dateTest;
+  int firstmonth;
+  int firstyear;
+  int secondmonth;
+  int secondyear;
+  int firstday;
+  int secondday;
+  int month;
+  int year;
+  int day;
+  double resultat;
 
+  void secondAfter(DateTime date1,DateTime date2){
+    _dateTime=date1.difference(date2);
+    day=_dateTime.inDays;
+
+    year=(day/365).toInt();
+    resultat=(day/365);
+    resultat = resultat - resultat.truncate();//prendre partie décimale
+    month=(resultat*12).toInt();
+    resultat=(resultat*12);
+    resultat = resultat - resultat.truncate();//prendre partie décimale
+    day=(resultat*31).toInt();
+    message='La différence est de ${year} année(s) ${month} mois ${day} jour(s)';
+  }
   void difference(){
     if(_firstDate==null || _secondDate==null){
       message='Select 2 date';
     }else{
       dateTest=_firstDate.isBefore(_secondDate);
       if(dateTest==true){
-        _dateTime=_secondDate.difference(_firstDate);
-        message='La différence est de ${_dateTime.inHours.toString()} heure';
+       secondAfter(_secondDate, _firstDate);
       }else{
-        _dateTime=_firstDate.difference(_secondDate);
-        message='La différence est de ${_dateTime.inHours.toString()} heure';
+        secondAfter(_firstDate, _secondDate);
       }
     }
   }
@@ -39,45 +63,57 @@ class _DatePageState extends State<DatePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(message),
-          RaisedButton(
-            child: Text('firstDate'),
-            elevation: 8.0,
-            onPressed: ()async{
-              final a =
-             await showDatePicker( //on affiche le DatePicker
-                  context: context,
-                  initialDate: _dateTime == null ? DateTime.now() : _dateTime,
-                  firstDate: DateTime(2001),
-                  lastDate: DateTime(2230)
-              );
-              setState(() {
-                _firstDate=a;
-              });
-            }),
-          RaisedButton(
-              child: Text('secondDate'),
+          SizedBox(child: Text(message)),
+          SizedBox(
+            width: 200,
+            height: 60,
+            child: RaisedButton(
+              child: Text(_firstDate==null?'firstDate':'${_firstDate.year}:${_firstDate.month}:${_firstDate.day}'),
               elevation: 8.0,
               onPressed: ()async{
                 final a =
-                await showDatePicker( //on affiche le DatePicker
+               await showDatePicker( //on affiche le DatePicker
                     context: context,
-                    initialDate: _dateTime == null ? DateTime.now() : _dateTime,
+                    initialDate: _start == null ? DateTime.now() : _start,
                     firstDate: DateTime(2001),
                     lastDate: DateTime(2230)
                 );
                 setState(() {
-                  _secondDate=a;
+                  _firstDate=a;
                 });
               }),
-          RaisedButton(
-            child: Text('valider'),
-            elevation: 8.0,
-            onPressed: (){
-              setState(() {
-                difference();
-              });
-            },
+          ),
+          SizedBox(
+            width: 200,
+            height: 60,
+            child: RaisedButton(
+                child: Text(_secondDate==null?'secondDate':'${_secondDate.year}:${_secondDate.month}:${_secondDate.day}'),
+                elevation: 8.0,
+                onPressed: ()async{
+                  final a =
+                  await showDatePicker( //on affiche le DatePicker
+                      context: context,
+                      initialDate: _start == null ? DateTime.now() : _start,
+                      firstDate: DateTime(2001),
+                      lastDate: DateTime(2230)
+                  );
+                  setState(() {
+                    _secondDate=a;
+                  });
+                }),
+          ),
+          SizedBox(
+            width: 200,
+            height: 60,
+            child: RaisedButton(
+              child: Text('valider'),
+              elevation: 8.0,
+              onPressed: (){
+                setState(() {
+                  difference();
+                });
+              },
+            ),
           ),
         ],
       )),
