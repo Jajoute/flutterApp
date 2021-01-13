@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_projet/home/feature.dart';
 import 'package:flutter_projet/storage/storage_repository.dart';
@@ -137,7 +139,11 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _findOrigin().then((value) => display = value);
+    if(Platform.isIOS || Platform.isAndroid){
+      _findOrigin().then((value) => display = value);
+    }else{
+      display = _buildGrid();
+    }
   }
 
   Future<Widget> _findOrigin() async{
@@ -168,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                 setState(() {
                   display = _buildGrid();
                 });
-                _storageRepository.upsert('homeStyle', 'grille');
+               if ( Platform.isIOS || Platform.isAndroid) _storageRepository.upsert('homeStyle', 'grille');
                 Navigator.of(context).pop();
               }),
               SizedBox(height: 5),
@@ -176,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                 setState(() {
                   display = _buildList();
                 });
-                _storageRepository.upsert('homeStyle', 'list');
+                if ( Platform.isIOS || Platform.isAndroid) _storageRepository.upsert('homeStyle', 'list');
                 Navigator.of(context).pop();
               }),
               SizedBox(height: 5),
@@ -184,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                 setState(() {
                   display = _buildCards();
                 });
-                _storageRepository.upsert('homeStyle', 'card');
+                if ( Platform.isIOS || Platform.isAndroid) _storageRepository.upsert('homeStyle', 'card');
                 Navigator.of(context).pop();
 
               }),
