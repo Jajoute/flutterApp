@@ -12,17 +12,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   StorageRepository _storageRepository = StorageRepository();
   List<Feature> maList = [
-    Feature("US2", Icons.ad_units, () {}),
-    Feature("US3", Icons.announcement_sharp, () {}),
-    Feature("US4", Icons.ad_units, () {}),
-    Feature("US5", Icons.ad_units, () {}),
-    Feature("US6", Icons.ad_units, () {}),
-    Feature("US7", Icons.ad_units, () {}),
-    Feature("US8", Icons.ad_units, () {}),
-    Feature("US9", Icons.ad_units, () {}),
-    Feature("US10", Icons.ad_units, () {}),
-    Feature("US11", Icons.ad_units, () {}),
-    Feature("US12", Icons.ad_units, () {})
+    Feature("US2", Icons.ad_units),
+    Feature("US3", Icons.announcement_sharp),
+    Feature("US4", Icons.ad_units),
+    Feature("US5", Icons.ad_units),
+    Feature("US6", Icons.ad_units),
+    Feature("US7", Icons.ad_units),
+    Feature("US8", Icons.ad_units),
+    Feature("US8Bis", Icons.ad_units),
+    Feature("US8Ter", Icons.ad_units),
+    Feature("US10", Icons.ad_units),
+    Feature("US11", Icons.ad_units),
+    Feature("US12", Icons.ad_units)
   ];
   Widget display;
 
@@ -46,7 +47,7 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 
-  GridView _buildGrid() => GridView.builder(
+  GridView _buildGrid({BuildContext context}) => GridView.builder(
     padding: EdgeInsets.all(20),
     itemCount: maList.length,
     gridDelegate:
@@ -57,7 +58,7 @@ class _HomePageState extends State<HomePage> {
         color: index % 2 == 0 ? Colors.blue.shade50 : Colors.white,
         child: FittedBox(
           child: GestureDetector(
-            onTap: item.destination,
+            onTap: () => item.navigateTo(context),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -80,7 +81,7 @@ class _HomePageState extends State<HomePage> {
   );
 
 
-  GridView _buildCards() => GridView.builder(
+  GridView _buildCards({BuildContext context}) => GridView.builder(
         padding: EdgeInsets.all(20),
         itemCount: maList.length,
         gridDelegate:
@@ -92,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                 clipBehavior: Clip.antiAlias,
                 elevation: 12.0,
                 child: InkWell(
-                  onTap: item.destination,
+                  onTap: () => item.navigateTo(context),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
@@ -113,7 +114,7 @@ class _HomePageState extends State<HomePage> {
         },
       );
 
-  ListView _buildList() => ListView.separated(
+  ListView _buildList({BuildContext context}) => ListView.separated(
         separatorBuilder: (context, index) => Divider(),
         padding: EdgeInsets.all(100),
         itemCount: maList.length,
@@ -125,7 +126,7 @@ class _HomePageState extends State<HomePage> {
               item.icon,
               color: Colors.blue,
             ),
-            onTap: () => item.destination,
+            onTap: () => item.navigateTo(context),
             title: Text(
               item.title,
               style: DefaultTextStyle.of(context)
@@ -172,7 +173,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               _buildDrawerButton('Grille', Icons.grid_view, () {
                 setState(() {
-                  display = _buildGrid();
+                  display = _buildGrid(context: context);
                 });
                if ( Platform.isIOS || Platform.isAndroid) _storageRepository.upsert('homeStyle', 'grille');
                 Navigator.of(context).pop();
@@ -180,7 +181,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 5),
               _buildDrawerButton('List', Icons.list, () {
                 setState(() {
-                  display = _buildList();
+                  display = _buildList(context: context);
                 });
                 if ( Platform.isIOS || Platform.isAndroid) _storageRepository.upsert('homeStyle', 'list');
                 Navigator.of(context).pop();
@@ -188,7 +189,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 5),
               _buildDrawerButton('Card', Icons.card_travel_rounded, () {
                 setState(() {
-                  display = _buildCards();
+                  display = _buildCards(context: context);
                 });
                 if ( Platform.isIOS || Platform.isAndroid) _storageRepository.upsert('homeStyle', 'card');
                 Navigator.of(context).pop();
