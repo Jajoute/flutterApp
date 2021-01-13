@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_projet/convertion_aires/convertion_aires.dart';
+import 'package:flutter_projet/convertion_distance/convertion_distance.dart';
 
 import 'package:flutter_projet/convertion_informatique/convertion_informatique.dart';
 import 'package:flutter_projet/home/home_page.dart';
@@ -23,6 +25,8 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => HomePage(),
           '/us2': (context) => ConvertionInformatique('Convertion Informatique'),
+          '/us4' : (context) => CalculPromotion('Calcul Promotion'),
+          '/us6' : (context) => ConvertionDistance('Convertion Distance'),
           '/us8': (context) => ConvertionAires('Convertion Aires'),
         },
       debugShowCheckedModeBanner: false,
