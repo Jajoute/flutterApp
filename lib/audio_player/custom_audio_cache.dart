@@ -6,14 +6,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:path_provider/path_provider.dart';
 
-import 'audio_player.dart';
+import 'custom_audio_player.dart';
 
-class AudioCache {
+
+class CustomAudioCache {
   Map<String, File> loadedFiles = {};
-  AudioPlayer fixedPlayer;
+  CustomAudioPlayer fixedPlayer;
 
 
-  AudioCache({
+  CustomAudioCache({
     this.fixedPlayer,
   });
 
@@ -22,7 +23,6 @@ class AudioCache {
     file?.delete();
   }
 
-  /// Clears the whole cache.
   void clearCache() {
     for (final file in loadedFiles.values) {
       file.delete();
@@ -47,18 +47,11 @@ class AudioCache {
     return loadedFiles[fileName];
   }
 
-  AudioPlayer _player(PlayerMode mode) {
-    return fixedPlayer ?? new AudioPlayer(mode: mode);
+  CustomAudioPlayer _player(PlayerMode mode) {
+    return fixedPlayer ?? new CustomAudioPlayer(mode: mode);
   }
 
-  /// Plays the given [fileName].
-  ///
-  /// If the file is already cached, it plays immediately. Otherwise, first waits for the file to load (might take a few milliseconds).
-  /// It creates a new instance of [AudioPlayer], so it does not affect other audios playing (unless you specify a [fixedPlayer], in which case it always use the same).
-  /// The instance is returned, to allow later access (either way), like pausing and resuming.
-  ///
-  /// isNotification and stayAwake are not implemented on macOS
-  Future<AudioPlayer> play(
+  Future<CustomAudioPlayer> play(
       String fileName, {
         double volume = 1.0,
         bool isNotification,
@@ -68,7 +61,7 @@ class AudioCache {
         bool duckAudio,
       }) async {
     String url = await getAbsoluteUrl(fileName);
-    AudioPlayer player = _player(mode);
+    CustomAudioPlayer player = _player(mode);
     player.setReleaseMode(ReleaseMode.STOP);
     await player.play(
       url,

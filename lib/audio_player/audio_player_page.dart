@@ -1,16 +1,7 @@
-
-
-import 'dart:io';
-
-
-
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 
-
-import 'custom/audio_cache.dart';
-import 'custom/audio_player.dart';
-
+import 'custom_audio_cache.dart';
+import 'custom_audio_player.dart';
 
 
 
@@ -20,32 +11,8 @@ class AudioPlayerPage extends StatefulWidget {
 }
 
 class _AudioPlayerPageState extends State<AudioPlayerPage> {
-  AudioCache audioCache = AudioCache();
-  AudioPlayer advancedPlayer = AudioPlayer();
-
-
-  // AudioCache audioCache;
-  // AudioPlayer audioPlayer;
-  // Duration duration = Duration();
-  // Duration position = Duration();
-  // bool isSongPlaying = false;
-  // bool isPlaying = false;
-  //
-  // void see1ToSeconds(int second){
-  //   Duration newDuration = Duration(seconds: second);
-  //   audioPlayer.seek(newDuration);
-  // }
-  //
-  // @override
-  //   void initState() {
-  //     super.initState();
-  //     if (Platform.isIOS) {
-  //       if (audioCache.fixedPlayer != null) {
-  //         audioCache.fixedPlayer.startHeadlessService();
-  //       }
-  //     }
-  //   }
-
+  CustomAudioCache audioCache = CustomAudioCache();
+  CustomAudioPlayer advancedPlayer = CustomAudioPlayer();
 
   @override
   Widget build(BuildContext context) {
