@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
-import 'package:flutter_projet/convertion_aires/convertion_aires.dart';
+
 import 'package:flutter_projet/home/home_page.dart';
 import 'convertion_informatique/convertion_informatique.dart';
 
@@ -25,6 +24,7 @@ class MyApp extends StatelessWidget {
           '/us8': (context) => ConvertionAires('Convertion Aires'),
         },
       debugShowCheckedModeBanner: false,
+
     );
   }
 }
