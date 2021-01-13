@@ -1,8 +1,8 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 
 class ConvertionInformatique extends StatefulWidget {
-  String title;
+  final String title;
 
   ConvertionInformatique(this.title);
 
@@ -11,7 +11,7 @@ class ConvertionInformatique extends StatefulWidget {
 }
 
 class _ConvertionInformatique extends State<ConvertionInformatique> {
-List<String> labels = [
+  List<String> labels = [
     'Octet - O',
     'Kilooctet - KO',
     'Mégaoctet - MO',
@@ -26,61 +26,61 @@ List<String> labels = [
   @override
   void initState() {
     super.initState();
-     inLabelValue = labels[0];
-     outLabelValue = labels[1];
-     inController = TextEditingController();
-     outController = TextEditingController();
+    inLabelValue = labels[0];
+    outLabelValue = labels[1];
+    inController = TextEditingController();
+    outController = TextEditingController();
   }
 
-  void fromInToOut(){
+  void fromInToOut() {
     double resInOctet = toOctet(inRes, inLabelValue);
     outController.text = toConvert(resInOctet, outLabelValue).toString();
+    outRes = double.parse(outController.text);
   }
 
-  void fromOutToIn(){
+  void fromOutToIn() {
     double resInOctet = toOctet(outRes, outLabelValue);
     inController.text = toConvert(resInOctet, inLabelValue).toString();
+    inRes = double.parse(inController.text);
   }
 
-  double toOctet(double value, String label){
-    if(value != null){
+  double toOctet(double value, String label) {
+    if (value != null) {
       switch (label) {
         case 'Octet - O':
           return value;
         case 'Kilooctet - KO':
-          return value * math.pow(10, 3);
+          return value * pow(10, 3);
         case 'Mégaoctet - MO':
-          return value * math.pow(10, 6);
+          return value * pow(10, 6);
         case 'Gigaoctet - GO':
-          return value * math.pow(10, 9);
+          return value * pow(10, 9);
         case 'Téraoctet - TO':
-          return value * math.pow(10, 12);
+          return value * pow(10, 12);
         case 'Pétaoctet - PO':
-          return value * math.pow(10, 15);
+          return value * pow(10, 15);
       }
     }
   }
 
-  double toConvert(double value, String label){
-   if(value != null){
-     switch (label) {
-       case 'Octet - O':
-         return value;
-       case 'Kilooctet - KO':
-         return value / math.pow(10, 3);
-       case 'Mégaoctet - MO':
-         return value / math.pow(10, 6);
-       case 'Gigaoctet - GO':
-         return value / math.pow(10, 9);
-       case 'Téraoctet - TO':
-         return value / math.pow(10, 12);
-       case 'Pétaoctet - PO':
-         return value / math.pow(10, 15);
-     }
-   }
-
+  double toConvert(double value, String label) {
+    if (value != null) {
+      switch (label) {
+        case 'Octet - O':
+          return value;
+        case 'Kilooctet - KO':
+          return value / pow(10, 3);
+        case 'Mégaoctet - MO':
+          return value / pow(10, 6);
+        case 'Gigaoctet - GO':
+          return value / pow(10, 9);
+        case 'Téraoctet - TO':
+          return value / pow(10, 12);
+        case 'Pétaoctet - PO':
+          return value / pow(10, 15);
+      }
+    }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +95,7 @@ List<String> labels = [
             //Menu déroulant des valeurs entrantes
             DropdownButton<String>(
               value: inLabelValue,
-              icon: Icon(Icons.arrow_downward),
+              icon: Icon(Icons.arrow_drop_down),
               iconSize: 24,
               elevation: 16,
               style: TextStyle(color: Colors.blue),
@@ -128,15 +128,16 @@ List<String> labels = [
                     fromInToOut();
                   });
                 },
-                controller:inController,
-                decoration: new InputDecoration(labelText: "Valeur Entrante:"),
+                controller: inController,
+                decoration:
+                    new InputDecoration(labelText: "Valeur Entrante: $inRes"),
               ),
             ),
 
             //Menu déroulant des valeurs sortantes
             DropdownButton<String>(
               value: outLabelValue,
-              icon: Icon(Icons.arrow_downward),
+              icon: Icon(Icons.arrow_drop_down),
               iconSize: 24,
               elevation: 16,
               style: TextStyle(color: Colors.blue),
@@ -169,8 +170,9 @@ List<String> labels = [
                     fromOutToIn();
                   });
                 },
-                controller:outController,
-                decoration: new InputDecoration(labelText: "Valeur Sortante:"),
+                controller: outController,
+                decoration:
+                    new InputDecoration(labelText: "Valeur Sortante: $outRes"),
               ),
             ),
           ],
