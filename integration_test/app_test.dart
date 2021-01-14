@@ -9,7 +9,7 @@
 // import 'package:flutter_test/flutter_test.dart';
 // import 'package:integration_test/integration_test.dart';
 //
-// import 'package:flutter_projet/main.dart' as app;
+// import 'package:flutter_projet/audio_player_page.dart' as app;
 //
 // void main() => run(_testMain);
 //

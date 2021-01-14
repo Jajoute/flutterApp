@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_projet/audio_player/audio_player_page.dart';
+import 'package:flutter_projet/audio_player/audio_player_page_.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,11 +12,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        fontFamily: 'Abel',
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       debugShowCheckedModeBanner: false,
-      home: AudioPlayerPage(),
+      home: AudioPlayerPage(title: 'Audio Player',),
     );
   }
 }
