@@ -1,35 +1,30 @@
 import 'package:flutter/material.dart';
 
-class ConvertionDistance extends StatefulWidget {
+class ConvertionNumerique extends StatefulWidget {
   final String title;
 
-  ConvertionDistance(this.title);
+  ConvertionNumerique(this.title);
 
   @override
-  _ConvertionDistance createState() => _ConvertionDistance();
+  _ConvertionNumerique createState() => _ConvertionNumerique();
 }
 
-class _ConvertionDistance extends State<ConvertionDistance> {
+class _ConvertionNumerique extends State<ConvertionNumerique> {
   List<String> labels = [
-    'Nanomètre – nm',
-    'Millimètre – mm',
-    'Centimètre – cm',
-    'Décimètre – dm',
-    'Mètre – m',
-    'Kilomètre – km',
-    'Yard – yd',
-    'Pied – ft',
-    'Pouce – in'
+    'Binaire - BIN',
+    'Octal - OCT',
+    'Décimal - DEC',
+    'Hexadécimal - HEX',
   ];
   String inLabelValue, outLabelValue;
   TextEditingController inController, outController;
-  double inRes, outRes;
+  int inRes, outRes;
 
   @override
   void initState() {
     super.initState();
-    inLabelValue = labels[1];
-    outLabelValue = labels[2];
+    inLabelValue = labels[2];
+    outLabelValue = labels[0];
     inController = TextEditingController(text: '');
     outController = TextEditingController(text: '');
     inRes = 0;
@@ -37,67 +32,43 @@ class _ConvertionDistance extends State<ConvertionDistance> {
   }
 
   void fromInToOut() {
-    double resInOctet = toMeter(inRes, inLabelValue);
-    outController.text = resInOctet != null
-        ? toConvert(resInOctet, outLabelValue).toString()
+    int resInDecimal = int.parse(toDecimal(inRes, inLabelValue));
+    outController.text = resInDecimal != null
+        ? toConvert(resInDecimal, outLabelValue).toString()
         : '';
-    outRes = double.parse(outController.text);
+    outRes = int.parse(outController.text);
   }
 
   void fromOutToIn() {
-    double resInOctet = toMeter(outRes, outLabelValue);
-    inController.text = resInOctet != null
-        ? toConvert(resInOctet, inLabelValue).toString()
-        : '';
-    inRes = double.parse(inController.text);
+    int resInDecimal = int.parse(toDecimal(outRes, outLabelValue));
+    inController.text =
+        resInDecimal != null ? toConvert(resInDecimal, inLabelValue) : '';
+    inRes = int.parse(inController.text);
   }
 
-  double toMeter(double value, String label) {
+  String toDecimal(int value, String label) {
     if (value != null) {
-      switch (label) {
-        case 'Nanomètre – nm':
-          return value / 10000;
-        case 'Millimètre – mm':
-          return value / 1000;
-        case 'Centimètre – cm':
-          return value / 100;
-        case 'Décimètre – dm':
-          return value / 10;
-        case 'Mètre – m':
-          return value;
-        case 'Kilomètre – km':
-          return value * 10;
-        case 'Yard – yd':
-          return value * 0.9144;
-        case 'Pied – ft':
-          return value * 0.3048;
-        case 'Pouce – in':
-          return value * 0.0254;
+      if (label == 'Décimal - DEC') {
+        return value.toString();
+      } else if (label == 'Binaire - BIN' ||
+          label == 'Octal - OCT' ||
+          label == 'Hexadécimal - HEX') {
+        return value.toRadixString(0);
       }
     }
   }
 
-  double toConvert(double value, String label) {
+  String toConvert(int value, String label) {
     if (value != null) {
       switch (label) {
-        case 'Nanomètre – nm':
-          return value * 10000;
-        case 'Millimètre – mm':
-          return value * 1000;
-        case 'Centimètre – cm':
-          return value * 100;
-        case 'Décimètre – dm':
-          return value * 10;
-        case 'Mètre – m':
-          return value;
-        case 'Kilomètre – km':
-          return value / 10;
-        case 'Yard – yd':
-          return value / 0.9144;
-        case 'Pied – ft':
-          return value / 0.3048;
-        case 'Pouce – in':
-          return value / 0.0254;
+        case 'Binaire - BIN':
+          return value.toRadixString(2);
+        case 'Octal - OCT':
+          return value.toRadixString(8);
+        case 'Décimal - DEC':
+          return value.toString();
+        case 'Hexadécimal - HEX':
+          return (value.toRadixString(16)).toUpperCase();
       }
     }
   }
@@ -144,7 +115,7 @@ class _ConvertionDistance extends State<ConvertionDistance> {
               child: TextField(
                 onChanged: (val) {
                   setState(() {
-                    inRes = double.parse(val);
+                    inRes = int.parse(val);
                     fromInToOut();
                   });
                 },
@@ -185,7 +156,7 @@ class _ConvertionDistance extends State<ConvertionDistance> {
               child: TextField(
                 onChanged: (val) {
                   setState(() {
-                    outRes = double.parse(val);
+                    outRes = int.parse(val);
                     fromOutToIn();
                   });
                 },
