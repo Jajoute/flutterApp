@@ -32,66 +32,45 @@ class _ConvertionNumerique extends State<ConvertionNumerique> {
   }
 
   void fromInToOut() {
-    int resInOctet = toDecimal(inRes, inLabelValue);
-    outController.text = resInOctet != null
-        ? toConvert(resInOctet, outLabelValue).toString()
+    int resInDecimal = int.parse(toDecimal(inRes, inLabelValue));
+    outController.text = resInDecimal != null
+        ? toConvert(resInDecimal, outLabelValue).toString()
         : '';
     outRes = int.parse(outController.text);
   }
 
   void fromOutToIn() {
-    int resInOctet = toDecimal(outRes, outLabelValue);
-    inController.text = resInOctet != null
-        ? toConvert(resInOctet, inLabelValue).toString()
-        : '';
+    int resInDecimal = int.parse(toDecimal(outRes, outLabelValue));
+    inController.text =
+        resInDecimal != null ? toConvert(resInDecimal, inLabelValue) : '';
     inRes = int.parse(inController.text);
   }
 
-  int toDecimal(int value, String label) {
+  String toDecimal(int value, String label) {
     if (value != null) {
-      switch (label) {
-        case 'Binaire - BIN':
-          return value;
-        case 'Octal - OCT':
-          return value;
-        case 'Décimal - DEC':
-          return value;
-        case 'Hexadécimal - HEX':
-          return value;
+      if (label == 'Décimal - DEC') {
+        return value.toString();
+      } else if (label == 'Binaire - BIN' ||
+          label == 'Octal - OCT' ||
+          label == 'Hexadécimal - HEX') {
+        return value.toRadixString(0);
       }
     }
   }
 
-  int toConvert(int value, String label) {
+  String toConvert(int value, String label) {
     if (value != null) {
       switch (label) {
         case 'Binaire - BIN':
-          return value;
+          return value.toRadixString(2);
         case 'Octal - OCT':
-          return value;
+          return value.toRadixString(8);
         case 'Décimal - DEC':
-          return value;
+          return value.toString();
         case 'Hexadécimal - HEX':
-          return value;
+          return (value.toRadixString(16)).toUpperCase();
       }
     }
-  }
-
-  String fromDecimalToOut(int value, int v) {
-    List<String> listValue;
-    String outValue;
-    do {
-      var rest = value % v;
-      listValue.add(rest.toString());
-      value = ((value - rest) / v) as int;
-    } while (value != 0);
-
-    do {
-      var index = listValue.length;
-      outValue = outValue + listValue[index];
-    } while (listValue.isNotEmpty);
-
-    return outValue;
   }
 
   @override

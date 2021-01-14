@@ -11,15 +11,15 @@ class ConvertionDistance extends StatefulWidget {
 
 class _ConvertionDistance extends State<ConvertionDistance> {
   List<String> labels = [
-    'Nanomètre–nm',
-    'Millimètre–mm',
+    'Nanomètre – nm',
+    'Millimètre – mm',
     'Centimètre – cm',
     'Décimètre – dm',
     'Mètre – m',
-    'Kilomètre –km',
-    'Yard–yd',
-    'Pied–ft',
-    'Pouce–in'
+    'Kilomètre – km',
+    'Yard – yd',
+    'Pied – ft',
+    'Pouce – in'
   ];
   String inLabelValue, outLabelValue;
   TextEditingController inController, outController;
@@ -55,9 +55,9 @@ class _ConvertionDistance extends State<ConvertionDistance> {
   double toMeter(double value, String label) {
     if (value != null) {
       switch (label) {
-        case 'Nanomètre–nm':
+        case 'Nanomètre – nm':
           return value / 10000;
-        case 'Millimètre–mm':
+        case 'Millimètre – mm':
           return value / 1000;
         case 'Centimètre – cm':
           return value / 100;
@@ -65,24 +65,24 @@ class _ConvertionDistance extends State<ConvertionDistance> {
           return value / 10;
         case 'Mètre – m':
           return value;
-        case 'Kilomètre –km':
+        case 'Kilomètre – km':
           return value * 10;
-        case 'Yard–yd':
+        case 'Yard – yd':
           return value * 0.9144;
-        case 'Pied–ft':
+        case 'Pied – ft':
           return value * 0.3048;
-        case 'Pouce–in':
-          return value * 0.0254;  
+        case 'Pouce – in':
+          return value * 0.0254;
       }
     }
   }
-    
+
   double toConvert(double value, String label) {
     if (value != null) {
       switch (label) {
-        case 'Nanomètre–nm':
+        case 'Nanomètre – nm':
           return value * 10000;
-        case 'Millimètre–mm':
+        case 'Millimètre – mm':
           return value * 1000;
         case 'Centimètre – cm':
           return value * 100;
@@ -90,14 +90,14 @@ class _ConvertionDistance extends State<ConvertionDistance> {
           return value * 10;
         case 'Mètre – m':
           return value;
-        case 'Kilomètre –km':
+        case 'Kilomètre – km':
           return value / 10;
-        case 'Yard–yd':
+        case 'Yard – yd':
           return value / 0.9144;
-        case 'Pied–ft':
+        case 'Pied – ft':
           return value / 0.3048;
-        case 'Pouce–in':
-          return value / 0.0254;  
+        case 'Pouce – in':
+          return value / 0.0254;
       }
     }
   }
