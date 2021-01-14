@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_projet/age/age_page.dart';
 import 'package:flutter_projet/audio_player/audio_player_page_.dart';
 import 'package:flutter_projet/calcul_promotion/calcul_promotion.dart';
 import 'package:flutter_projet/convertion_aires/convertion_aires.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_projet/convertion_temp/convertion_temp.dart';
 import 'package:flutter_projet/date/date_page.dart';
 import 'package:flutter_projet/home/feature.dart';
 import 'package:flutter_projet/storage/storage_repository.dart';
+import 'package:flutter_projet/convertion_romain/convertion_romain.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -25,7 +27,7 @@ class _HomePageState extends State<HomePage> {
         Icons.sd_storage_outlined,
         ConvertionInformatique('Convertion Informatique'),
         TransitionType.scale),
-    Feature("Calcul Date de Naissance", Icons.cake_outlined, null,
+    Feature("Calcul Date de Naissance", Icons.cake_outlined, AgePage("Calcul Date de Naissance"),
         TransitionType.fade),
     Feature("Calcul de Promotion", Icons.wallet_giftcard_outlined,
         CalculPromotion('Calcul de Promotion'), TransitionType.slide),
@@ -39,13 +41,13 @@ class _HomePageState extends State<HomePage> {
         ConvertionAires('Convertion d\'Aires'), TransitionType.fade),
     Feature("Convertion de Température", Icons.device_thermostat,
         ConvertionTemp("Convertion de Température"), TransitionType.slide),
-    Feature("Convertion en Chiffre Romain", Icons.history_edu, null,
+    Feature("Convertion en Chiffre Romain", Icons.history_edu, ConvertionRomain("Convertion en Chiffre Romain"),
         TransitionType.scale),
     Feature(
         "Lecteur de Musique",
         Icons.music_note,
         AudioPlayerPage(
-          title: 'MyAudio Player',
+          title: 'Lecture de Musique',
         ),
         TransitionType.fade)
   ];

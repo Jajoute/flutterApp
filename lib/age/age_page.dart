@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AgePage extends StatefulWidget {
+  final String title;
+  AgePage(this.title);
   @override
   _AgePageState createState() => _AgePageState();
 }
@@ -69,7 +71,12 @@ class _AgePageState extends State<AgePage> {
         }
         if(n==2){
           //messageSecond="jjjj ${DateTime.now().add(Duration(days: 365))}";
-          _temporaire=new DateTime(DateTime.now().year, _firstDate.month, _firstDate.day);
+          if(_firstDate.year==DateTime.now().year){
+            _temporaire=new DateTime(DateTime.now().year+1, _firstDate.month, _firstDate.day);
+          }
+          else{
+            _temporaire=new DateTime(DateTime.now().year, _firstDate.month, _firstDate.day);
+          }
           secondAfter(_temporaire, DateTime.now(),2);
         }
         if(n==3){
@@ -83,7 +90,7 @@ class _AgePageState extends State<AgePage> {
     return Scaffold(
 
       appBar: AppBar(
-        title: Text("Age"),
+        title: Text(widget.title),
       ),
 
       body: Center(
