@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_projet/audio_player/audio_player_page_.dart';
 
 import 'package:flutter_projet/date/date_page.dart';
 
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
 
       title: 'Flutter Demo',
       theme: ThemeData(
+        fontFamily: 'Abel',
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
@@ -33,6 +35,7 @@ class MyApp extends StatelessWidget {
           '/us6' : (context) => ConvertionDistance('Convertion Distance'),
           '/us8': (context) => ConvertionAires('Convertion Aires'),
           '/us5': (context) => DatePage(),
+          '/us12': (context) => AudioPlayerPage(title: 'My Audio Player',)
         },
       debugShowCheckedModeBanner: false,
     );
