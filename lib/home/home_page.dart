@@ -83,9 +83,11 @@ class _HomePageState extends State<HomePage> {
             SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
         itemBuilder: (context, index) {
           final item = maList[index];
-          return Container(
-            color: index % 2 == 0 ? Colors.blue.shade50 : Colors.white,
-            child: FittedBox(
+          return FittedBox(
+            child: Container(
+              color: index % 2 == 0 ? Colors.blue.shade50 : Colors.white,
+              height: 110,
+              width: 110,
               child: GestureDetector(
                 onTap: () => item.navigateTo(context),
                 child: Padding(
@@ -118,49 +120,58 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (context, index) {
           final item = maList[index];
           return FittedBox(
-            child: Card(
-                clipBehavior: Clip.antiAlias,
-                elevation: 12.0,
-                child: InkWell(
-                  onTap: () => item.navigateTo(context),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          item.icon,
-                          color: Colors.blue,
-                        ),
-                        Text(item.title,
-                            style: DefaultTextStyle.of(context).style.apply(
-                                fontSizeFactor: 0.5, color: Colors.blue)),
-                      ],
+            child: SizedBox(
+              height: 110,
+              width: 110,
+              child: Card(
+                  clipBehavior: Clip.antiAlias,
+                  elevation: 12.0,
+                  child: InkWell(
+                    onTap: () => item.navigateTo(context),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            item.icon,
+                            color: Colors.blue,
+                          ),
+                          Text(item.title,
+                              style: DefaultTextStyle.of(context).style.apply(
+                                  fontSizeFactor: 0.5, color: Colors.blue)),
+                        ],
+                      ),
                     ),
-                  ),
-                )),
+                  )),
+            ),
           );
         },
       );
 
   ListView _buildList({BuildContext context}) => ListView.separated(
         separatorBuilder: (context, index) => Divider(),
-        padding: EdgeInsets.all(100),
+        padding: EdgeInsets.all(50),
         itemCount: maList.length,
         itemBuilder: (context, index) {
           final item = maList[index];
 
-          return ListTile(
-            trailing: Icon(
-              item.icon,
-              color: Colors.blue,
-            ),
-            onTap: () => item.navigateTo(context),
-            title: Text(
-              item.title,
-              style: DefaultTextStyle.of(context)
-                  .style
-                  .apply(fontSizeFactor: 1, color: Colors.blue),
+          return FittedBox(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: ListTile(
+                trailing: Icon(
+                  item.icon,
+                  color: Colors.blue,
+                ),
+                onTap: () => item.navigateTo(context),
+                title: Text(
+                  item.title,
+                  style: DefaultTextStyle.of(context)
+                      .style
+                      .apply(fontSizeFactor: 1, color: Colors.blue),
+                ),
+              ),
             ),
           );
         },

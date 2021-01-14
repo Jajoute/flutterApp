@@ -28,7 +28,6 @@ class Feature{
 
   Feature(this._title, this._icon, this._page, this._transition);
 
-
   void navigateTo(BuildContext context) => Navigator.of(context).push(createRouteTransition(child: _page, type: _transition));
 
   Route createRouteTransition({@required Widget child, @required TransitionType type}) {
