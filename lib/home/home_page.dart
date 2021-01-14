@@ -1,6 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_projet/audio_player/audio_player_page_.dart';
+import 'package:flutter_projet/calcul_promotion/calcul_promotion.dart';
+import 'package:flutter_projet/convertion_aires/convertion_aires.dart';
+import 'package:flutter_projet/convertion_distance/convertion_distance.dart';
+import 'package:flutter_projet/convertion_informatique/convertion_informatique.dart';
+import 'package:flutter_projet/date/date_page.dart';
 import 'package:flutter_projet/home/feature.dart';
 import 'package:flutter_projet/storage/storage_repository.dart';
 
@@ -12,18 +18,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   StorageRepository _storageRepository = StorageRepository();
   List<Feature> maList = [
-    Feature("US2", Icons.ad_units),
-    Feature("US3", Icons.announcement_sharp),
-    Feature("US4", Icons.ad_units),
-    Feature("US5", Icons.ad_units),
-    Feature("US6", Icons.ad_units),
-    Feature("US7", Icons.ad_units),
-    Feature("US8", Icons.ad_units),
-    Feature("US8Bis", Icons.ad_units),
-    Feature("US8Ter", Icons.ad_units),
-    Feature("US10", Icons.ad_units),
-    Feature("US11", Icons.ad_units),
-    Feature("US12", Icons.ad_units)
+    Feature("US2", Icons.ad_units, ConvertionInformatique('Convertion Informatique'), TransitionType.scale),
+    Feature("US4", Icons.ad_units, CalculPromotion('Calcul Promotion'), TransitionType.slide),
+    Feature("US5", Icons.ad_units, DatePage(), TransitionType.fade),
+    Feature("US6", Icons.ad_units, ConvertionDistance('Convertion Distance'), TransitionType.slide),
+    Feature("US8", Icons.ad_units, ConvertionAires('Convertion Aires'), TransitionType.fade),
+    Feature("US12", Icons.ad_units, AudioPlayerPage(title: 'My Audio Player',), TransitionType.slide)
   ];
   Widget display;
 
