@@ -10,6 +10,8 @@ import 'package:flutter_projet/convertion_informatique/convertion_informatique.d
 import 'package:flutter_projet/home/home_page.dart';
 import 'package:flutter_projet/calcul_promotion/calcul_promotion.dart';
 
+import 'age/age_page.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -29,10 +31,11 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => HomePage(),
           '/us2': (context) => ConvertionInformatique('Convertion Informatique'),
+          '/us3': (context) => AgePage(),
           '/us4' : (context) => CalculPromotion('Calcul Promotion'),
+          '/us5': (context) => DatePage(),
           '/us6' : (context) => ConvertionDistance('Convertion Distance'),
           '/us8': (context) => ConvertionAires('Convertion Aires'),
-          '/us5': (context) => DatePage(),
         },
       debugShowCheckedModeBanner: false,
     );
