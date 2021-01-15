@@ -6,7 +6,7 @@ A new Flutter application.
 
 This is a normal flutter macos desktop app. Please download the latest release available.
 
-## What's included
+## Roadmap
 
 https://trello.com/b/3wsm1hOD/flutterapp
 
