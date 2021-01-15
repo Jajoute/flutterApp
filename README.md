@@ -4,13 +4,16 @@ A new Flutter application.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This is a normal flutter macos desktop app. Please download the latest release available.
 
-A few resources to get you started if this is your first Flutter project:
+## What's included
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+https://trello.com/b/3wsm1hOD/flutterapp
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Thanks
+
+Thanks to all contributors and their support:
+
+## Copyright and license
+
+Code and documentation copyright 2021 the authors.
