@@ -1,23 +1,25 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 
-class ConvertionInformatique extends StatefulWidget {
+class ConvertionDistancePage extends StatefulWidget {
   final String title;
 
-  ConvertionInformatique(this.title);
+  ConvertionDistancePage(this.title);
 
   @override
-  _ConvertionInformatique createState() => _ConvertionInformatique();
+  _ConvertionDistance createState() => _ConvertionDistance();
 }
 
-class _ConvertionInformatique extends State<ConvertionInformatique> {
+class _ConvertionDistance extends State<ConvertionDistancePage> {
   List<String> labels = [
-    'Octet - O',
-    'Kilooctet - KO',
-    'Mégaoctet - MO',
-    'Gigaoctet - GO',
-    'Téraoctet - TO',
-    'Pétaoctet - PO'
+    'Nanomètre – nm',
+    'Millimètre – mm',
+    'Centimètre – cm',
+    'Décimètre – dm',
+    'Mètre – m',
+    'Kilomètre – km',
+    'Yard – yd',
+    'Pied – ft',
+    'Pouce – in'
   ];
   String inLabelValue, outLabelValue;
   TextEditingController inController, outController;
@@ -26,60 +28,80 @@ class _ConvertionInformatique extends State<ConvertionInformatique> {
   @override
   void initState() {
     super.initState();
-    inLabelValue = labels[0];
-    outLabelValue = labels[1];
+    inLabelValue = labels[1];
+    outLabelValue = labels[2];
     inController = TextEditingController(text: '');
     outController = TextEditingController(text: '');
     inRes = 0;
     outRes = 0;
   }
 
+  //Call to change the outController value and update outRes
   void fromInToOut() {
-    double resInOctet = toOctet(inRes, inLabelValue);
-    outController.text = resInOctet != null ? toConvert(resInOctet, outLabelValue).toString() : '';
+    double resInOctet = toMeter(inRes, inLabelValue);
+    outController.text = resInOctet != null
+        ? toConvert(resInOctet, outLabelValue).toString()
+        : '';
     outRes = double.parse(outController.text);
   }
 
+  //Call to change the inController value and update intRes
   void fromOutToIn() {
-    double resInOctet = toOctet(outRes, outLabelValue);
-    inController.text = resInOctet != null ? toConvert(resInOctet, inLabelValue).toString() : '';
+    double resInOctet = toMeter(outRes, outLabelValue);
+    inController.text = resInOctet != null
+        ? toConvert(resInOctet, inLabelValue).toString()
+        : '';
     inRes = double.parse(inController.text);
   }
 
-  double toOctet(double value, String label) {
+  //Convert every value into meter
+  double toMeter(double value, String label) {
     if (value != null) {
       switch (label) {
-        case 'Octet - O':
+        case 'Nanomètre – nm':
+          return value / 10000;
+        case 'Millimètre – mm':
+          return value / 1000;
+        case 'Centimètre – cm':
+          return value / 100;
+        case 'Décimètre – dm':
+          return value / 10;
+        case 'Mètre – m':
           return value;
-        case 'Kilooctet - KO':
-          return value * pow(10, 3);
-        case 'Mégaoctet - MO':
-          return value * pow(10, 6);
-        case 'Gigaoctet - GO':
-          return value * pow(10, 9);
-        case 'Téraoctet - TO':
-          return value * pow(10, 12);
-        case 'Pétaoctet - PO':
-          return value * pow(10, 15);
+        case 'Kilomètre – km':
+          return value * 10;
+        case 'Yard – yd':
+          return value * 0.9144;
+        case 'Pied – ft':
+          return value * 0.3048;
+        case 'Pouce – in':
+          return value * 0.0254;
       }
     }
   }
 
+  //Convert meter values to all other distance values
   double toConvert(double value, String label) {
     if (value != null) {
       switch (label) {
-        case 'Octet - O':
+        case 'Nanomètre – nm':
+          return value * 10000;
+        case 'Millimètre – mm':
+          return value * 1000;
+        case 'Centimètre – cm':
+          return value * 100;
+        case 'Décimètre – dm':
+          return value * 10;
+        case 'Mètre – m':
           return value;
-        case 'Kilooctet - KO':
-          return value / pow(10, 3);
-        case 'Mégaoctet - MO':
-          return value / pow(10, 6);
-        case 'Gigaoctet - GO':
-          return value / pow(10, 9);
-        case 'Téraoctet - TO':
-          return value / pow(10, 12);
-        case 'Pétaoctet - PO':
-          return value / pow(10, 15);
+        case 'Kilomètre – km':
+          return value / 10;
+        case 'Yard – yd':
+          return value / 0.9144;
+        case 'Pied – ft':
+          return value / 0.3048;
+        case 'Pouce – in':
+          return value / 0.0254;
       }
     }
   }
@@ -94,7 +116,7 @@ class _ConvertionInformatique extends State<ConvertionInformatique> {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            //Menu déroulant des valeurs entrantes
+            //Unit of measure to convert
             DropdownButton<String>(
               value: inLabelValue,
               icon: Icon(Icons.arrow_drop_down),
@@ -119,10 +141,10 @@ class _ConvertionInformatique extends State<ConvertionInformatique> {
               }).toList(),
             ),
 
-            //Textfield pour entrer des valeurs entrantes
             SizedBox(
               width: 200,
               height: 60,
+              //Value to convert 
               child: TextField(
                 onChanged: (val) {
                   setState(() {
@@ -131,12 +153,11 @@ class _ConvertionInformatique extends State<ConvertionInformatique> {
                   });
                 },
                 controller: inController,
-                decoration:
-                    new InputDecoration(labelText: "Valeur Entrante: "),
+                decoration: new InputDecoration(labelText: "Valeur Entrante: "),
               ),
             ),
 
-            //Menu déroulant des valeurs sortantes
+            //Unit of measure to convert to
             DropdownButton<String>(
               value: outLabelValue,
               icon: Icon(Icons.arrow_drop_down),
@@ -161,10 +182,10 @@ class _ConvertionInformatique extends State<ConvertionInformatique> {
               }).toList(),
             ),
 
-            //Textfield pour entrer des valeurs sortantes
             SizedBox(
               width: 200,
               height: 60,
+              //Value to convert to
               child: TextField(
                 onChanged: (val) {
                   setState(() {
@@ -173,8 +194,7 @@ class _ConvertionInformatique extends State<ConvertionInformatique> {
                   });
                 },
                 controller: outController,
-                decoration:
-                    new InputDecoration(labelText: "Valeur Sortante: "),
+                decoration: new InputDecoration(labelText: "Valeur Sortante: "),
               ),
             ),
           ],
