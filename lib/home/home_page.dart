@@ -42,9 +42,9 @@ class _HomePageState extends State<HomePage> {
     Feature("Convertion d\'Aires", Icons.map_outlined,
         ConvertionAires('Convertion d\'Aires'), TransitionType.fade),
     Feature("Convertion de Température", Icons.device_thermostat,
-        ConvertionTemp("Convertion de Température"), TransitionType.slide),
+        ConvertionTempPage("Convertion de Température"), TransitionType.slide),
     Feature("Convertion en Chiffre Romain", Icons.history_edu,
-        ConvertionRomain("Convertion en Chiffre Romain"), TransitionType.scale),
+        ConvertionRomainPage("Convertion en Chiffre Romain"), TransitionType.scale),
     Feature(
         "Lecteur de Musique",
         Icons.music_note,
