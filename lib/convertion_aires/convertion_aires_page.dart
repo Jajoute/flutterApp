@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 
-
-
-class ConvertionAires extends StatefulWidget {
-
+class ConvertionAiresPage extends StatefulWidget {
   final String title;
-  ConvertionAires(this.title);
+
+  ConvertionAiresPage(this.title);
 
   @override
   _ConvertionAires createState() => _ConvertionAires();
 }
 
-class _ConvertionAires extends State<ConvertionAires> {
-
+class _ConvertionAires extends State<ConvertionAiresPage> {
   String inLabelValue, outLabelValue;
-  List<String> labels =['cm²','m²','km²','hectare','acre'];
+  List<String> labels = ['cm²', 'm²', 'km²', 'hectare', 'acre'];
   TextEditingController inController, outController;
 
   double inRes, outRes;
@@ -30,7 +27,6 @@ class _ConvertionAires extends State<ConvertionAires> {
     outRes = 0;
   }
 
-
   void fromInToOut() {
     double resInOctet = toMeter(inRes, inLabelValue);
     outController.text = toConvert(resInOctet, outLabelValue).toString();
@@ -43,25 +39,18 @@ class _ConvertionAires extends State<ConvertionAires> {
     inRes = double.parse(inController.text);
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
-
         title: Text(widget.title),
       ),
       body: Center(
-
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-
             DropdownButton(
-              value : inLabelValue,
+              value: inLabelValue,
               icon: Icon(Icons.arrow_drop_down),
               iconSize: 24,
               elevation: 16,
@@ -89,10 +78,8 @@ class _ConvertionAires extends State<ConvertionAires> {
               height: 60,
               child: TextField(
                 decoration: InputDecoration(
-                    border: InputBorder.none,
-                    labelText: 'Valeur à convertir'
-                ),
-                onChanged: (v){
+                    border: InputBorder.none, labelText: 'Valeur à convertir'),
+                onChanged: (v) {
                   setState(() {
                     inRes = double.parse(v);
                     fromInToOut();
@@ -102,13 +89,9 @@ class _ConvertionAires extends State<ConvertionAires> {
               ),
             ),
 
-
-
-
-
             //----Converted Value----
             DropdownButton(
-              value : outLabelValue,
+              value: outLabelValue,
               icon: Icon(Icons.arrow_drop_down),
               iconSize: 24,
               elevation: 16,
@@ -130,38 +113,26 @@ class _ConvertionAires extends State<ConvertionAires> {
                 );
               }).toList(),
             ),
-
-
             SizedBox(
               width: 200,
               height: 60,
               child: TextField(
                 decoration: InputDecoration(
-                    border: InputBorder.none,
-                    labelText: 'Résultat'
-                ),
-
-                onChanged: (v){
+                    border: InputBorder.none, labelText: 'Résultat'),
+                onChanged: (v) {
                   setState(() {
                     outRes = double.parse(v);
                     fromOutToIn();
                   });
                 },
-
                 controller: outController,
-
-
               ),
             ),
-
           ],
-
         ),
       ),
     );
   }
-
-
 
   double toMeter(double entryValue, String label) {
     if (entryValue != null) {
@@ -181,14 +152,18 @@ class _ConvertionAires extends State<ConvertionAires> {
   }
 
   double toConvert(double result, String label) {
-
-    if (result != null){
+    if (result != null) {
       switch (label) {
-        case "km²": return result * 0.000001;
-        case "m²": return result;
-        case "cm²": return result * 1000;
-        case "hectare": return result * 0.00010;
-        case "acre": return result * 0.00025;
+        case "km²":
+          return result * 0.000001;
+        case "m²":
+          return result;
+        case "cm²":
+          return result * 1000;
+        case "hectare":
+          return result * 0.00010;
+        case "acre":
+          return result * 0.00025;
       }
     }
   }
