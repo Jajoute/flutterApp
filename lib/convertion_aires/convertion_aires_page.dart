@@ -1,26 +1,19 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 
-class ConvertionInformatique extends StatefulWidget {
+class ConvertionAiresPage extends StatefulWidget {
   final String title;
 
-  ConvertionInformatique(this.title);
+  ConvertionAiresPage(this.title);
 
   @override
-  _ConvertionInformatique createState() => _ConvertionInformatique();
+  _ConvertionAires createState() => _ConvertionAires();
 }
 
-class _ConvertionInformatique extends State<ConvertionInformatique> {
-  List<String> labels = [
-    'Octet - O',
-    'Kilooctet - KO',
-    'Mégaoctet - MO',
-    'Gigaoctet - GO',
-    'Téraoctet - TO',
-    'Pétaoctet - PO'
-  ];
+class _ConvertionAires extends State<ConvertionAiresPage> {
   String inLabelValue, outLabelValue;
+  List<String> labels = ['cm²', 'm²', 'km²', 'hectare', 'acre'];
   TextEditingController inController, outController;
+
   double inRes, outRes;
 
   @override
@@ -28,74 +21,35 @@ class _ConvertionInformatique extends State<ConvertionInformatique> {
     super.initState();
     inLabelValue = labels[0];
     outLabelValue = labels[1];
-    inController = TextEditingController(text: '');
-    outController = TextEditingController(text: '');
+    inController = TextEditingController();
+    outController = TextEditingController();
     inRes = 0;
     outRes = 0;
   }
 
   void fromInToOut() {
-    double resInOctet = toOctet(inRes, inLabelValue);
-    outController.text = resInOctet != null ? toConvert(resInOctet, outLabelValue).toString() : '';
+    double resInOctet = toMeter(inRes, inLabelValue);
+    outController.text = toConvert(resInOctet, outLabelValue).toString();
     outRes = double.parse(outController.text);
   }
 
   void fromOutToIn() {
-    double resInOctet = toOctet(outRes, outLabelValue);
-    inController.text = resInOctet != null ? toConvert(resInOctet, inLabelValue).toString() : '';
+    double resInOctet = toMeter(outRes, outLabelValue);
+    inController.text = toConvert(resInOctet, inLabelValue).toString();
     inRes = double.parse(inController.text);
-  }
-
-  double toOctet(double value, String label) {
-    if (value != null) {
-      switch (label) {
-        case 'Octet - O':
-          return value;
-        case 'Kilooctet - KO':
-          return value * pow(10, 3);
-        case 'Mégaoctet - MO':
-          return value * pow(10, 6);
-        case 'Gigaoctet - GO':
-          return value * pow(10, 9);
-        case 'Téraoctet - TO':
-          return value * pow(10, 12);
-        case 'Pétaoctet - PO':
-          return value * pow(10, 15);
-      }
-    }
-  }
-
-  double toConvert(double value, String label) {
-    if (value != null) {
-      switch (label) {
-        case 'Octet - O':
-          return value;
-        case 'Kilooctet - KO':
-          return value / pow(10, 3);
-        case 'Mégaoctet - MO':
-          return value / pow(10, 6);
-        case 'Gigaoctet - GO':
-          return value / pow(10, 9);
-        case 'Téraoctet - TO':
-          return value / pow(10, 12);
-        case 'Pétaoctet - PO':
-          return value / pow(10, 15);
-      }
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: Center(
-            child: Column(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            //Menu déroulant des valeurs entrantes
-            DropdownButton<String>(
+          children: <Widget>[
+            DropdownButton(
               value: inLabelValue,
               icon: Icon(Icons.arrow_drop_down),
               iconSize: 24,
@@ -119,25 +73,24 @@ class _ConvertionInformatique extends State<ConvertionInformatique> {
               }).toList(),
             ),
 
-            //Textfield pour entrer des valeurs entrantes
             SizedBox(
               width: 200,
               height: 60,
               child: TextField(
-                onChanged: (val) {
+                decoration: InputDecoration(
+                    border: InputBorder.none, labelText: 'Valeur à convertir'),
+                onChanged: (v) {
                   setState(() {
-                    inRes = double.parse(val);
+                    inRes = double.parse(v);
                     fromInToOut();
                   });
                 },
                 controller: inController,
-                decoration:
-                    new InputDecoration(labelText: "Valeur Entrante: "),
               ),
             ),
 
-            //Menu déroulant des valeurs sortantes
-            DropdownButton<String>(
+            //----Converted Value----
+            DropdownButton(
               value: outLabelValue,
               icon: Icon(Icons.arrow_drop_down),
               iconSize: 24,
@@ -160,24 +113,58 @@ class _ConvertionInformatique extends State<ConvertionInformatique> {
                 );
               }).toList(),
             ),
-
-            //Textfield pour entrer des valeurs sortantes
             SizedBox(
               width: 200,
               height: 60,
               child: TextField(
-                onChanged: (val) {
+                decoration: InputDecoration(
+                    border: InputBorder.none, labelText: 'Résultat'),
+                onChanged: (v) {
                   setState(() {
-                    outRes = double.parse(val);
+                    outRes = double.parse(v);
                     fromOutToIn();
                   });
                 },
                 controller: outController,
-                decoration:
-                    new InputDecoration(labelText: "Valeur Sortante: "),
               ),
             ),
           ],
-        )));
+        ),
+      ),
+    );
+  }
+
+  double toMeter(double entryValue, String label) {
+    if (entryValue != null) {
+      switch (label) {
+        case "km²":
+          return entryValue * 1000000;
+        case "m²":
+          return entryValue;
+        case "cm²":
+          return entryValue * 0.001;
+        case "hectare":
+          return entryValue * 10000;
+        case "acre":
+          return entryValue * 4046.85642;
+      }
+    }
+  }
+
+  double toConvert(double result, String label) {
+    if (result != null) {
+      switch (label) {
+        case "km²":
+          return result * 0.000001;
+        case "m²":
+          return result;
+        case "cm²":
+          return result * 1000;
+        case "hectare":
+          return result * 0.00010;
+        case "acre":
+          return result * 0.00025;
+      }
+    }
   }
 }

@@ -1,74 +1,107 @@
 import 'package:flutter/material.dart';
 
-class ConvertionNumerique extends StatefulWidget {
+class ConvertionDistancePage extends StatefulWidget {
   final String title;
 
-  ConvertionNumerique(this.title);
+  ConvertionDistancePage(this.title);
 
   @override
-  _ConvertionNumerique createState() => _ConvertionNumerique();
+  _ConvertionDistance createState() => _ConvertionDistance();
 }
 
-class _ConvertionNumerique extends State<ConvertionNumerique> {
+class _ConvertionDistance extends State<ConvertionDistancePage> {
   List<String> labels = [
-    'Binaire - BIN',
-    'Octal - OCT',
-    'Décimal - DEC',
-    'Hexadécimal - HEX',
+    'Nanomètre – nm',
+    'Millimètre – mm',
+    'Centimètre – cm',
+    'Décimètre – dm',
+    'Mètre – m',
+    'Kilomètre – km',
+    'Yard – yd',
+    'Pied – ft',
+    'Pouce – in'
   ];
   String inLabelValue, outLabelValue;
   TextEditingController inController, outController;
-  int inRes, outRes;
+  double inRes, outRes;
 
   @override
   void initState() {
     super.initState();
-    inLabelValue = labels[2];
-    outLabelValue = labels[0];
+    inLabelValue = labels[1];
+    outLabelValue = labels[2];
     inController = TextEditingController(text: '');
     outController = TextEditingController(text: '');
     inRes = 0;
     outRes = 0;
   }
 
+  //Call to change the outController value and update outRes
   void fromInToOut() {
-    int resInDecimal = int.parse(toDecimal(inRes, inLabelValue));
-    outController.text = resInDecimal != null
-        ? toConvert(resInDecimal, outLabelValue).toString()
+    double resInOctet = toMeter(inRes, inLabelValue);
+    outController.text = resInOctet != null
+        ? toConvert(resInOctet, outLabelValue).toString()
         : '';
-    outRes = int.parse(outController.text);
+    outRes = double.parse(outController.text);
   }
 
+  //Call to change the inController value and update intRes
   void fromOutToIn() {
-    int resInDecimal = int.parse(toDecimal(outRes, outLabelValue));
-    inController.text =
-        resInDecimal != null ? toConvert(resInDecimal, inLabelValue) : '';
-    inRes = int.parse(inController.text);
+    double resInOctet = toMeter(outRes, outLabelValue);
+    inController.text = resInOctet != null
+        ? toConvert(resInOctet, inLabelValue).toString()
+        : '';
+    inRes = double.parse(inController.text);
   }
 
-  String toDecimal(int value, String label) {
+  //Convert every value into meter
+  double toMeter(double value, String label) {
     if (value != null) {
-      if (label == 'Décimal - DEC') {
-        return value.toString();
-      } else if (label == 'Binaire - BIN' ||
-          label == 'Octal - OCT' ||
-          label == 'Hexadécimal - HEX') {
-        return value.toRadixString(0);
+      switch (label) {
+        case 'Nanomètre – nm':
+          return value / 10000;
+        case 'Millimètre – mm':
+          return value / 1000;
+        case 'Centimètre – cm':
+          return value / 100;
+        case 'Décimètre – dm':
+          return value / 10;
+        case 'Mètre – m':
+          return value;
+        case 'Kilomètre – km':
+          return value * 10;
+        case 'Yard – yd':
+          return value * 0.9144;
+        case 'Pied – ft':
+          return value * 0.3048;
+        case 'Pouce – in':
+          return value * 0.0254;
       }
     }
   }
 
-  String toConvert(int value, String label) {
+  //Convert meter values to all other distance values
+  double toConvert(double value, String label) {
     if (value != null) {
       switch (label) {
-        case 'Binaire - BIN':
-          return value.toRadixString(2);
-        case 'Octal - OCT':
-          return value.toRadixString(8);
-        case 'Décimal - DEC':
-          return value.toString();
-        case 'Hexadécimal - HEX':
-          return (value.toRadixString(16)).toUpperCase();
+        case 'Nanomètre – nm':
+          return value * 10000;
+        case 'Millimètre – mm':
+          return value * 1000;
+        case 'Centimètre – cm':
+          return value * 100;
+        case 'Décimètre – dm':
+          return value * 10;
+        case 'Mètre – m':
+          return value;
+        case 'Kilomètre – km':
+          return value / 10;
+        case 'Yard – yd':
+          return value / 0.9144;
+        case 'Pied – ft':
+          return value / 0.3048;
+        case 'Pouce – in':
+          return value / 0.0254;
       }
     }
   }
@@ -83,7 +116,7 @@ class _ConvertionNumerique extends State<ConvertionNumerique> {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            //Menu déroulant des valeurs entrantes
+            //Unit of measure to convert
             DropdownButton<String>(
               value: inLabelValue,
               icon: Icon(Icons.arrow_drop_down),
@@ -108,14 +141,14 @@ class _ConvertionNumerique extends State<ConvertionNumerique> {
               }).toList(),
             ),
 
-            //Textfield pour entrer des valeurs entrantes
             SizedBox(
               width: 200,
               height: 60,
+              //Value to convert 
               child: TextField(
                 onChanged: (val) {
                   setState(() {
-                    inRes = int.parse(val);
+                    inRes = double.parse(val);
                     fromInToOut();
                   });
                 },
@@ -124,7 +157,7 @@ class _ConvertionNumerique extends State<ConvertionNumerique> {
               ),
             ),
 
-            //Menu déroulant des valeurs sortantes
+            //Unit of measure to convert to
             DropdownButton<String>(
               value: outLabelValue,
               icon: Icon(Icons.arrow_drop_down),
@@ -149,14 +182,14 @@ class _ConvertionNumerique extends State<ConvertionNumerique> {
               }).toList(),
             ),
 
-            //Textfield pour entrer des valeurs sortantes
             SizedBox(
               width: 200,
               height: 60,
+              //Value to convert to
               child: TextField(
                 onChanged: (val) {
                   setState(() {
-                    outRes = int.parse(val);
+                    outRes = double.parse(val);
                     fromOutToIn();
                   });
                 },

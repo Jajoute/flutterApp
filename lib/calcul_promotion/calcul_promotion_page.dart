@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class CalculPromotion extends StatefulWidget {
+class CalculPromotionPage extends StatefulWidget {
   final String title;
 
-  CalculPromotion(this.title);
+  CalculPromotionPage(this.title);
 
   @override
   _CalculPromotion createState() => _CalculPromotion();
 }
 
-class _CalculPromotion extends State<CalculPromotion> {
+class _CalculPromotion extends State<CalculPromotionPage> {
   double inRes, inRes2, outRes, ecoValue;
   TextEditingController inController, inController2, outController;
 
@@ -21,6 +21,8 @@ class _CalculPromotion extends State<CalculPromotion> {
     outController = TextEditingController();
   }
 
+  //Call to change the outController value and ecoValue
+  //When you enter your initial price and the promotion
   void fromInToOut() {
     if (inRes != null && inRes2 != null) {
       ecoValue = inRes * (inRes2 / 100);
@@ -28,6 +30,8 @@ class _CalculPromotion extends State<CalculPromotion> {
     }
   }
 
+  //Call to change the inController value and ecoValue 
+  //When you enter your final price and the promotion
   void fromOutToIn() {
     if (outRes != null && inRes2 != null) {
       inController.text = (outRes / (1 - (inRes2 / 100))).toString();
@@ -51,6 +55,7 @@ class _CalculPromotion extends State<CalculPromotion> {
                 SizedBox(
                   width: 200,
                   height: 60,
+                  //Initial price of the product
                   child: TextField(
                     onChanged: (val) {
                       setState(() {});
@@ -64,6 +69,7 @@ class _CalculPromotion extends State<CalculPromotion> {
                 SizedBox(
                   width: 200,
                   height: 60,
+                  //Percentage of the promotion
                   child: TextField(
                     onChanged: (val) {
                       setState(() {});
@@ -83,6 +89,7 @@ class _CalculPromotion extends State<CalculPromotion> {
                 SizedBox(
                   width: 200,
                   height: 60,
+                  //Final price of the product
                   child: TextField(
                     onChanged: (val) {
                       setState(() {});
@@ -97,6 +104,7 @@ class _CalculPromotion extends State<CalculPromotion> {
                   width: 200,
                   height: 60,
                   child: Center(
+                    //The money you saved with the promotion
                     child: Text("Économie réalisée: ${ecoValue ?? ""}"),
                   ),
                 ),
