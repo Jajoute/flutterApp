@@ -152,8 +152,9 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
               Material(
                 elevation: 10,
                 child: Container(
-                  constraints: BoxConstraints(maxWidth: 400, maxHeight: 400),
-                  child: Image.asset("assets/${item.imagePath}"),
+                  width: 400,
+                  height: 400,
+                  child: Image.asset("assets/${item.imagePath}", fit: BoxFit.cover,),
                 ),
               ),
               SizedBox(height: 50),
