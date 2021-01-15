@@ -138,6 +138,11 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
     return Scaffold(
       backgroundColor: Colors.blue,
       appBar: AppBar(
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: () {
+          _play();
+          Navigator.pop(context);
+        }
+        ,),
         title: Text(
           widget.title,
           style: TextStyle(
