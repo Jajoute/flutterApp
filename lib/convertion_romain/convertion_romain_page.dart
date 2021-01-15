@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 
-class ConvertionRomain extends StatefulWidget {
+class ConvertionRomainPage extends StatefulWidget {
   final String title;
 
-  ConvertionRomain(this.title);
+  ConvertionRomainPage(this.title);
 
   @override
-  _ConvertionRomain createState() => _ConvertionRomain();
+  _ConvertionRomainPage createState() => _ConvertionRomainPage();
 }
 
-class _ConvertionRomain extends State<ConvertionRomain> {
+class _ConvertionRomainPage extends State<ConvertionRomainPage> {
 
-  String inLabelValue, outLabelValue;
+  String inLabelValue, outLabelValue, outRes;
   TextEditingController inController, outController;
-
   int inRes;
-  String outRes;
 
   @override
   void initState() {
@@ -28,17 +26,14 @@ class _ConvertionRomain extends State<ConvertionRomain> {
   }
 
   void fromInToOut() {
-    //double resInCelsius = toCelsius(inRes, inLabelValue);
     outController.text = toRomain(inRes).toString();
     outRes = outController.text;
   }
 
   void fromOutToIn() {
-    //double resInOctet = toCelsius(outRes, outLabelValue);
     inController.text = toNumber(outRes).toString();
     inRes = int.parse(inController.text);
   }
-
 
   String toRomain(int value) {
     int u, d, c, m = 0;
@@ -59,10 +54,9 @@ class _ConvertionRomain extends State<ConvertionRomain> {
 
   int toNumber(String value) {
     int result = 0;
-
     var number = [];
-
     String cleanValue = value.trim();
+
     Map<String, int> romano = {
       'I': 1,
       'V': 5,
@@ -74,25 +68,19 @@ class _ConvertionRomain extends State<ConvertionRomain> {
     };
 
     for (int i = 0; i < cleanValue.length; i++){
-
       number.add(romano[cleanValue[i]]);
     }
+
     number.add(0);
 
     for (int j = 0; j < number.length-1; j++){
-      print('start');
-      print(j);
       if (number[j]>=number[j + 1]){
-
         result += number[j];
       }else result -= number[j];
-
-      print('result :$result');
-
     }
     return result;
-
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -104,8 +92,9 @@ class _ConvertionRomain extends State<ConvertionRomain> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-
-
+//////////////////////////////////////////////////////
+//TEXT FIELD WITH NUMBER
+/////////////////////////////////////////////////////
                 SizedBox(
                   width: 200,
                   height: 60,
@@ -121,7 +110,9 @@ class _ConvertionRomain extends State<ConvertionRomain> {
                     new InputDecoration(labelText: "Chiffre"),
                   ),
                 ),
-
+//////////////////////////////////////////////////////
+//TEXT FIELD WITH ROMANS NUMBER
+/////////////////////////////////////////////////////
                 SizedBox(
                   width: 200,
                   height: 60,
@@ -140,6 +131,4 @@ class _ConvertionRomain extends State<ConvertionRomain> {
               ],
             )));
   }
-
-
 }

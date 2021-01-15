@@ -1,103 +1,150 @@
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_projet/audio_player/widget/player_control_button_widget.dart';
 
-import 'music.dart';
+import 'model/music.dart';
+
 
 class AudioPlayerPage extends StatefulWidget {
   final String title;
 
   const AudioPlayerPage({Key key, this.title}) : super(key: key);
-  
+
   @override
   _AudioPlayerPageState createState() => _AudioPlayerPageState();
 }
 
 class _AudioPlayerPageState extends State<AudioPlayerPage> {
- List<Music> musics = [
-   Music('Musique 1', 'San Goku', 'images/sangoku.png', 'musics/2.mp3'),
-   Music('Musique 2', 'San Gohan', 'images/sangohan.jpg', 'musics/1.mp3'),
-   Music('Musique 3', 'Broly', 'images/broly.jpg', 'musics/3.mp3'),
- ];
-  static AudioCache cache = AudioCache();
-  AudioPlayer player;
-  int index = 0;
-   bool isPlaying = false;
-   bool isPaused = false;
-   IconData icon = Icons.play_arrow;
+  List<Music> _musics = [
+    Music('Musique 1', 'San Goku', 'images/sangoku.png', 'musics/2.mp3'),
+    Music('Musique 2', 'San Gohan', 'images/sangohan.jpg', 'musics/1.mp3'),
+    Music('Musique 3', 'Broly', 'images/broly.jpg', 'musics/3.mp3'),
+  ];
+  AudioCache _cache;
+  AudioPlayer _player;
+  int _index = 0;
+  bool _isPlaying = false;
+  bool _isPaused = false;
+  IconData _icon = Icons.play_arrow;
+  Duration _duration = new Duration();
+  Duration _position = new Duration();
+  AudioPlayerState _playerState;
 
- void playHandler() async {
-   if (isPlaying) {
-     player.stop();
-   } else {
-     player = await cache.play(musics[index].musicPath);
-   }
+  String _formatTime(Duration duration) =>
+      "${duration.inMinutes.remainder(60)}:${(duration.inSeconds.remainder(60))}";
 
-   setState(() {
-     if (isPaused) {
-       isPlaying = false;
-       isPaused = false;
-       icon = Icons.play_arrow;
-     } else {
-       isPlaying = !isPlaying;
-       icon = Icons.stop;
-     }
-   });
- }
-
- void pauseHandler() {
-   if (isPaused && isPlaying) {
-     player.resume();
-   } else {
-     player.pause();
-   }
-   setState(() {
-     isPaused = !isPaused;
-     if (isPaused && isPlaying) {
-       icon = Icons.pause;
-     } else {
-       icon = Icons.play_arrow;
-     }
-   });
- }
-
-  next() async{
-   if(player != null){
-     player.stop();
-   }
-    if(index == musics.length -1){
-      index = 0;
-    }else{
-      index++;
+  void _play() async {
+    if (_isPlaying) {
+      _player.stop();
+    } else {
+      _player = await _cache.play(_musics[_index].musicPath);
     }
+
     setState(() {
-      isPlaying = false;
-      isPaused = false;
+      if (_isPaused) {
+        _isPlaying = false;
+        _isPaused = false;
+        _icon = Icons.play_arrow;
+      } else {
+        _isPlaying = !_isPlaying;
+        _icon = Icons.stop;
+      }
     });
   }
 
-  previous() async{
-    if(player != null){
-      player.stop();
-    }
-    if(index == 0){
-      index = musics.length - 1;
-    }else{
-      index--;
+  void _pause() {
+    if (_isPaused && _isPlaying) {
+      _player.resume();
+    } else {
+      _player.pause();
     }
     setState(() {
-      isPlaying = false;
-      isPaused = false;
+      _isPaused = !_isPaused;
+      if (_isPaused && _isPlaying) {
+        _icon = Icons.pause;
+      } else {
+        _icon = Icons.play_arrow;
+      }
     });
+  }
+
+  void _next() async {
+    if (_player != null) {
+      _player.stop();
+    }
+    if (_index == _musics.length - 1) {
+      _index = 0;
+    } else {
+      _index++;
+    }
+    setState(() {
+      _isPlaying = false;
+      _isPaused = false;
+    });
+  }
+
+  void _previous() async {
+    if (_player != null) {
+      _player.stop();
+    }
+    if (_index == 0) {
+      _index = _musics.length - 1;
+    } else {
+      _index--;
+    }
+    setState(() {
+      _isPlaying = false;
+      _isPaused = false;
+    });
+  }
+
+
+  void _seekToSecond(int second) {
+    Duration newDuration = Duration(seconds: second);
+    _player.seek(newDuration);
+  }
+
+  void _initAudioPlayer() {
+    _player = new AudioPlayer();
+    _cache = new AudioCache(fixedPlayer: _player);
+    _player.onDurationChanged.listen((Duration d) {
+      setState(() => _duration = d);
+    });
+    _player.onAudioPositionChanged.listen((Duration p) {
+      setState(() => _position = p);
+    });
+    _player.onPlayerStateChanged.listen((AudioPlayerState s) {
+      setState(() {
+        _playerState = s;
+        if (_playerState == AudioPlayerState.COMPLETED) {
+          _next();
+          Future.delayed(Duration(seconds: 1), () => _play());
+        }
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initAudioPlayer();
   }
 
 
   @override
   Widget build(BuildContext context) {
-    final item = musics[index];
+    final item = _musics[_index];
     return Scaffold(
+      backgroundColor: Colors.blue,
       appBar: AppBar(
-        title: Text(widget.title, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 30),),
+        title: Text(
+          widget.title,
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
+              fontSize: 30),
+        ),
       ),
       body: Center(
         child: FittedBox(
@@ -107,34 +154,95 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
               Material(
                 elevation: 10,
                 child: Container(
-                  constraints: BoxConstraints(maxWidth: 400, maxHeight: 400),
-                 child: Image.asset("assets/${item.imagePath}"),
+                  width: 400,
+                  height: 400,
+                  child: Image.asset("assets/${item.imagePath}", fit: BoxFit.cover,),
                 ),
               ),
               SizedBox(height: 50),
-              Text(item.artist, style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.blue),),
+////////////////////////////////////////////////////////////////////////////////
+// ARTIST & TITLE
+////////////////////////////////////////////////////////////////////////////////
+              Text(
+                item.artist,
+                style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
               SizedBox(height: 20),
-              Text(item.title, style: TextStyle(color: Colors.blue),),
+              Text(
+                item.title,
+                style: TextStyle(color: Colors.white),
+              ),
               Divider(),
+////////////////////////////////////////////////////////////////////////////////
+// PLAYER DURATION SLIDER
+////////////////////////////////////////////////////////////////////////////////
+              Stack(
+                children: [
+                  SizedBox(
+                    width: 400,
+                    child: Slider(
+                        activeColor: Colors.white,
+                        inactiveColor: Colors.grey,
+                        value: _position.inSeconds.toDouble(),
+                        min: 0.0,
+                        max: _duration.inSeconds.toDouble(),
+                        onChanged: (double value) {
+                          setState(() {
+                            _seekToSecond(value.toInt());
+                            value = value;
+                          });
+                        }),
+                  ),
+                  Positioned(
+                      left: 0,
+                      child: Text(
+                        _formatTime(_position),
+                        style: TextStyle(color: Colors.white),
+                      )),
+                  Positioned(
+                      right: 0,
+                      child: Text(
+                        _formatTime(_duration),
+                        style: TextStyle(color: Colors.white),
+                      ))
+                ],
+              ),
+              Divider(),
+////////////////////////////////////////////////////////////////////////////////
+// PLAYER CONTROL BUTTONS BAR
+////////////////////////////////////////////////////////////////////////////////
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   TextButton(
-                      onPressed: previous , child: Icon(Icons.fast_rewind, color: Colors.blue, size: 30,)),
-                  PlayerControlButton(
-                    onPressed: playHandler,
-                    isTrue: isPlaying,
+                      onPressed: _previous,
+                      child: Icon(
+                        Icons.fast_rewind,
+                        color: Colors.white,
+                        size: 30,
+                      )),
+                  PlayerControlButtonWidget(
+                    onPressed: _play,
+                    isTrue: _isPlaying,
                     trueIcon: Icons.stop,
                     falseIcon: Icons.play_arrow,
                   ),
-                  PlayerControlButton(
-                    onPressed: isPlaying ? pauseHandler : null,
-                    isTrue: isPaused,
+                  PlayerControlButtonWidget(
+                    onPressed: _isPlaying ? _pause : null,
+                    isTrue: _isPaused,
                     trueIcon: Icons.play_arrow,
                     falseIcon: Icons.pause,
                   ),
                   TextButton(
-                      onPressed: next , child: Icon(Icons.fast_forward, color: Colors.blue, size: 30,)),
+                      onPressed: _next,
+                      child: Icon(
+                        Icons.fast_forward,
+                        color: Colors.white,
+                        size: 30,
+                      )),
                 ],
               )
             ],
@@ -145,34 +253,3 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
   }
 }
 
-
-class PlayerControlButton extends StatefulWidget {
-  final Function() onPressed;
-  final bool isTrue;
-  final IconData trueIcon;
-  final IconData falseIcon;
-
-  PlayerControlButton({
-    @required this.onPressed,
-    @required this.isTrue,
-    @required this.trueIcon,
-    @required this.falseIcon,
-  });
-
-  @override
-  _PlayerControlButtonState createState() => _PlayerControlButtonState();
-}
-
-class _PlayerControlButtonState extends State<PlayerControlButton> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(10),
-      child: SizedBox(
-        width: 70,
-        height: 70,
-        child: TextButton(onPressed: widget.onPressed, child: Icon(widget.isTrue ? widget.trueIcon : widget.falseIcon, color: Colors.blue, size: 50,)),
-      ),
-    );
-  }
-}

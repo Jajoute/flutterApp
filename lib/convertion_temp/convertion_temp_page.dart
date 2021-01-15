@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 
-class ConvertionTemp extends StatefulWidget {
+class ConvertionTempPage extends StatefulWidget {
   final String title;
 
-  ConvertionTemp(this.title);
+  ConvertionTempPage(this.title);
 
   @override
-  _ConvertionTemp createState() => _ConvertionTemp();
+  _ConvertionTempPage createState() => _ConvertionTempPage();
 }
 
-class _ConvertionTemp extends State<ConvertionTemp> {
+class _ConvertionTempPage extends State<ConvertionTempPage> {
+  String inLabelValue, outLabelValue;
+  TextEditingController inController, outController;
+  double inRes, outRes;
+
   List<String> labels = [
     'Celsius',
     'Fahrenheit',
     'Kelvin',
   ];
-  String inLabelValue, outLabelValue;
-  TextEditingController inController, outController;
-
-  double inRes, outRes;
 
   @override
   void initState() {
@@ -47,13 +47,12 @@ class _ConvertionTemp extends State<ConvertionTemp> {
   double toCelsius(double value, String label) {
     if (value != null) {
       switch (label) {
-    case 'Celsius':
+        case 'Celsius':
           return value;
         case 'Fahrenheit':
           return (value - 32) * 5/9;
         case 'Kelvin':
           return value - 273.15;
-
       }
     }
   }
@@ -81,7 +80,9 @@ class _ConvertionTemp extends State<ConvertionTemp> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                //Menu déroulant des valeurs entrantes
+//////////////////////////////////////////////////////
+//DROP DOWN BUTTON FOR INPUT VALUE
+/////////////////////////////////////////////////////
                 DropdownButton<String>(
                   value: inLabelValue,
                   icon: Icon(Icons.arrow_drop_down),
@@ -105,8 +106,9 @@ class _ConvertionTemp extends State<ConvertionTemp> {
                     );
                   }).toList(),
                 ),
-
-                //Textfield pour entrer des valeurs entrantes
+//////////////////////////////////////////////////////
+//TEXT FIELD FOR INPUT VALUE
+/////////////////////////////////////////////////////
                 SizedBox(
                   width: 200,
                   height: 60,
@@ -122,8 +124,9 @@ class _ConvertionTemp extends State<ConvertionTemp> {
                     new InputDecoration(labelText: "$inLabelValue"),
                   ),
                 ),
-
-                //Menu déroulant des valeurs sortantes
+//////////////////////////////////////////////////////
+//DROP DOWN BUTTON FOR OUTPUT VALUE
+/////////////////////////////////////////////////////
                 DropdownButton<String>(
                   value: outLabelValue,
                   icon: Icon(Icons.arrow_drop_down),
@@ -148,8 +151,9 @@ class _ConvertionTemp extends State<ConvertionTemp> {
                     );
                   }).toList(),
                 ),
-
-                //Textfield pour entrer des valeurs sortantes
+//////////////////////////////////////////////////////
+//TEXT FIELD WITH NUMBER
+///////////////////////////////////////////////////// 
                 SizedBox(
                   width: 200,
                   height: 60,
