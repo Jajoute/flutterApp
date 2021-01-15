@@ -8,9 +8,13 @@ import 'package:flutter_projet/convertion_aires/convertion_aires_page.dart';
 import 'package:flutter_projet/convertion_distance/convertion_distance.dart';
 import 'package:flutter_projet/convertion_informatique/convertion_informatique.dart';
 import 'package:flutter_projet/convertion_numerique/convertion_numerique.dart';
+
 import 'package:flutter_projet/convertion_temp/convertion_temp_page.dart';
 import 'package:flutter_projet/date/date_page.dart';
+
 import 'package:flutter_projet/home/feature.dart';
+import 'package:flutter_projet/date/date_page.dart';
+import 'package:flutter_projet/home/model/feature.dart';
 import 'package:flutter_projet/storage/shared_pref_storage_repository.dart';
 import 'package:flutter_projet/storage/storage_repository.dart';
 import 'package:flutter_projet/convertion_romain/convertion_romain_page.dart';
@@ -21,24 +25,30 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+////////////////////////////////////////////////////////////////////////////////
+// FAST STORAGE
+////////////////////////////////////////////////////////////////////////////////
   SharedPrefStorageRepository _storageRepository =
       SharedPrefStorageRepository();
-  List<Feature> maList = [
+////////////////////////////////////////////////////////////////////////////////
+// ROUTER
+////////////////////////////////////////////////////////////////////////////////
+  List<Feature> _router = [
     Feature(
         "Convertion Informatique",
         Icons.sd_storage_outlined,
-        ConvertionInformatique('Convertion Informatique'),
+        ConvertionInformatiquePage('Convertion Informatique'),
         TransitionType.scale),
     Feature("Calcul Date de Naissance", Icons.cake_outlined,
         AgePage("Calcul Date de Naissance"), TransitionType.fade),
     Feature("Calcul de Promotion", Icons.wallet_giftcard_outlined,
-        CalculPromotion('Calcul de Promotion'), TransitionType.slide),
+        CalculPromotionPage('Calcul de Promotion'), TransitionType.slide),
     Feature("Différence de Date", Icons.today_outlined,
         DatePage("Différence de Date"), TransitionType.fade),
     Feature("Convertion de Distance", Icons.architecture,
-        ConvertionDistance('Convertion de Distance'), TransitionType.slide),
+        ConvertionDistancePage('Convertion de Distance'), TransitionType.slide),
     Feature("Convertion Numérique", Icons.calculate_outlined,
-        ConvertionNumerique("Convertion Numérique"), TransitionType.scale),
+        ConvertionNumeriquePage("Convertion Numérique"), TransitionType.scale),
     Feature("Convertion d\'Aires", Icons.map_outlined,
         ConvertionAiresPage('Convertion d\'Aires'), TransitionType.fade),
     Feature("Convertion de Température", Icons.device_thermostat,
@@ -53,7 +63,7 @@ class _HomePageState extends State<HomePage> {
         ),
         TransitionType.fade)
   ];
-  Widget display;
+  Widget _display;
 
   ElevatedButton _buildDrawerButton(
           String title, IconData icon, Function() onPressed) =>
@@ -80,11 +90,11 @@ class _HomePageState extends State<HomePage> {
 
   GridView _buildGrid({BuildContext context}) => GridView.builder(
         padding: EdgeInsets.all(20),
-        itemCount: maList.length,
+        itemCount: _router.length,
         gridDelegate:
             SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
         itemBuilder: (context, index) {
-          final item = maList[index];
+          final item = _router[index];
           return FittedBox(
             fit: BoxFit.fill,
             child: Container(
@@ -101,10 +111,6 @@ class _HomePageState extends State<HomePage> {
                       color: index % 2 == 0 ? Colors.blue : Colors.white,
                       size: 40,
                     ),
-                    // Text(item.title,
-                    //     style: DefaultTextStyle.of(context)
-                    //         .style
-                    //         .apply(fontSizeFactor: 0.5, color: Colors.blue)),
                   ],
                 ),
               ),
@@ -115,11 +121,11 @@ class _HomePageState extends State<HomePage> {
 
   GridView _buildCards({BuildContext context}) => GridView.builder(
         padding: EdgeInsets.all(20),
-        itemCount: maList.length,
+        itemCount: _router.length,
         gridDelegate:
             SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
         itemBuilder: (context, index) {
-          final item = maList[index];
+          final item = _router[index];
           return FittedBox(
             child: SizedBox(
               height: 110,
@@ -156,9 +162,9 @@ class _HomePageState extends State<HomePage> {
   ListView _buildList({BuildContext context}) => ListView.separated(
         separatorBuilder: (context, index) => Divider(),
         padding: EdgeInsets.all(50),
-        itemCount: maList.length,
+        itemCount: _router.length,
         itemBuilder: (context, index) {
-          final item = maList[index];
+          final item = _router[index];
 
           return FittedBox(
             child: Container(
@@ -192,9 +198,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    display = _buildGrid();
+    _display = _buildGrid();
     _findOrigin().then((value) {
-      display = value;
+      _display = value;
     });
   }
 
@@ -214,7 +220,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //Le Scaffold c'est la feneêtre de l'appli c'est comme le conteneur principale dans react
+////////////////////////////////////////////////////////////////////////////////
+// LEFT DRAWER (sort by list, grid, card)
+////////////////////////////////////////////////////////////////////////////////
       drawer: Container(
         width: 80,
         color: Colors.blue,
@@ -224,7 +232,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             _buildDrawerButton('Grille', Icons.grid_view, () {
               setState(() {
-                display = _buildGrid(context: context);
+                _display = _buildGrid(context: context);
               });
               _storageRepository.upsert('homeStyle', 'grille');
               Navigator.of(context).pop();
@@ -232,7 +240,7 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 5),
             _buildDrawerButton('Liste', Icons.list, () {
               setState(() {
-                display = _buildList(context: context);
+                _display = _buildList(context: context);
               });
               _storageRepository.upsert('homeStyle', 'list');
               Navigator.of(context).pop();
@@ -240,7 +248,7 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 5),
             _buildDrawerButton('Card', Icons.card_travel_rounded, () {
               setState(() {
-                display = _buildCards(context: context);
+                _display = _buildCards(context: context);
               });
               _storageRepository.upsert('homeStyle', 'card');
               Navigator.of(context).pop();
@@ -249,16 +257,17 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       backgroundColor: Colors.blue,
-
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text("Accueil"),
         elevation: 0,
       ),
+////////////////////////////////////////////////////////////////////////////////
+// BODY DEPENDING ON SORT
+////////////////////////////////////////////////////////////////////////////////
       body: Center(
-        child: display ?? CircularProgressIndicator(),
+        child: _display ?? CircularProgressIndicator(),
       ),
     );
   }
 }
+

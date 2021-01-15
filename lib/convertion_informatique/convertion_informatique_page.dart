@@ -1,74 +1,89 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 
-class ConvertionNumerique extends StatefulWidget {
+class ConvertionInformatiquePage extends StatefulWidget {
   final String title;
 
-  ConvertionNumerique(this.title);
+  ConvertionInformatiquePage(this.title);
 
   @override
-  _ConvertionNumerique createState() => _ConvertionNumerique();
+  _ConvertionInformatique createState() => _ConvertionInformatique();
 }
 
-class _ConvertionNumerique extends State<ConvertionNumerique> {
+class _ConvertionInformatique extends State<ConvertionInformatiquePage> {
   List<String> labels = [
-    'Binaire - BIN',
-    'Octal - OCT',
-    'Décimal - DEC',
-    'Hexadécimal - HEX',
+    'Octet - O',
+    'Kilooctet - KO',
+    'Mégaoctet - MO',
+    'Gigaoctet - GO',
+    'Téraoctet - TO',
+    'Pétaoctet - PO'
   ];
   String inLabelValue, outLabelValue;
   TextEditingController inController, outController;
-  int inRes, outRes;
+  double inRes, outRes;
 
   @override
   void initState() {
     super.initState();
-    inLabelValue = labels[2];
-    outLabelValue = labels[0];
+    inLabelValue = labels[0];
+    outLabelValue = labels[1];
     inController = TextEditingController(text: '');
     outController = TextEditingController(text: '');
     inRes = 0;
     outRes = 0;
   }
 
+  //Call to change the outController value and update outRes
   void fromInToOut() {
-    int resInDecimal = int.parse(toDecimal(inRes, inLabelValue));
-    outController.text = resInDecimal != null
-        ? toConvert(resInDecimal, outLabelValue).toString()
-        : '';
-    outRes = int.parse(outController.text);
+    double resInOctet = toOctet(inRes, inLabelValue);
+    outController.text = resInOctet != null ? toConvert(resInOctet, outLabelValue).toString() : '';
+    outRes = double.parse(outController.text);
   }
 
+  //Call to change the inController value and update intRes
   void fromOutToIn() {
-    int resInDecimal = int.parse(toDecimal(outRes, outLabelValue));
-    inController.text =
-        resInDecimal != null ? toConvert(resInDecimal, inLabelValue) : '';
-    inRes = int.parse(inController.text);
+    double resInOctet = toOctet(outRes, outLabelValue);
+    inController.text = resInOctet != null ? toConvert(resInOctet, inLabelValue).toString() : '';
+    inRes = double.parse(inController.text);
   }
 
-  String toDecimal(int value, String label) {
+  //Convert every value into octet
+  double toOctet(double value, String label) {
     if (value != null) {
-      if (label == 'Décimal - DEC') {
-        return value.toString();
-      } else if (label == 'Binaire - BIN' ||
-          label == 'Octal - OCT' ||
-          label == 'Hexadécimal - HEX') {
-        return value.toRadixString(0);
+      switch (label) {
+        case 'Octet - O':
+          return value;
+        case 'Kilooctet - KO':
+          return value * pow(10, 3);
+        case 'Mégaoctet - MO':
+          return value * pow(10, 6);
+        case 'Gigaoctet - GO':
+          return value * pow(10, 9);
+        case 'Téraoctet - TO':
+          return value * pow(10, 12);
+        case 'Pétaoctet - PO':
+          return value * pow(10, 15);
       }
     }
   }
 
-  String toConvert(int value, String label) {
+  //Convert octet values to all other data storage values
+  double toConvert(double value, String label) {
     if (value != null) {
       switch (label) {
-        case 'Binaire - BIN':
-          return value.toRadixString(2);
-        case 'Octal - OCT':
-          return value.toRadixString(8);
-        case 'Décimal - DEC':
-          return value.toString();
-        case 'Hexadécimal - HEX':
-          return (value.toRadixString(16)).toUpperCase();
+        case 'Octet - O':
+          return value;
+        case 'Kilooctet - KO':
+          return value / pow(10, 3);
+        case 'Mégaoctet - MO':
+          return value / pow(10, 6);
+        case 'Gigaoctet - GO':
+          return value / pow(10, 9);
+        case 'Téraoctet - TO':
+          return value / pow(10, 12);
+        case 'Pétaoctet - PO':
+          return value / pow(10, 15);
       }
     }
   }
@@ -83,7 +98,7 @@ class _ConvertionNumerique extends State<ConvertionNumerique> {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            //Menu déroulant des valeurs entrantes
+            //Unit of measure to convert
             DropdownButton<String>(
               value: inLabelValue,
               icon: Icon(Icons.arrow_drop_down),
@@ -108,23 +123,24 @@ class _ConvertionNumerique extends State<ConvertionNumerique> {
               }).toList(),
             ),
 
-            //Textfield pour entrer des valeurs entrantes
             SizedBox(
               width: 200,
               height: 60,
+              //Value to convert
               child: TextField(
                 onChanged: (val) {
                   setState(() {
-                    inRes = int.parse(val);
+                    inRes = double.parse(val);
                     fromInToOut();
                   });
                 },
                 controller: inController,
-                decoration: new InputDecoration(labelText: "Valeur Entrante: "),
+                decoration:
+                    new InputDecoration(labelText: "Valeur Entrante: "),
               ),
             ),
 
-            //Menu déroulant des valeurs sortantes
+            //Unit of measure to convert to
             DropdownButton<String>(
               value: outLabelValue,
               icon: Icon(Icons.arrow_drop_down),
@@ -149,19 +165,20 @@ class _ConvertionNumerique extends State<ConvertionNumerique> {
               }).toList(),
             ),
 
-            //Textfield pour entrer des valeurs sortantes
             SizedBox(
               width: 200,
               height: 60,
+              //Value to convert to
               child: TextField(
                 onChanged: (val) {
                   setState(() {
-                    outRes = int.parse(val);
+                    outRes = double.parse(val);
                     fromOutToIn();
                   });
                 },
                 controller: outController,
-                decoration: new InputDecoration(labelText: "Valeur Sortante: "),
+                decoration:
+                    new InputDecoration(labelText: "Valeur Sortante: "),
               ),
             ),
           ],
