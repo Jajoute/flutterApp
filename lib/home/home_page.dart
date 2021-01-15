@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_projet/age/age_page.dart';
 import 'package:flutter_projet/audio_player/audio_player_page_.dart';
-import 'package:flutter_projet/calcul_promotion/calcul_promotion.dart';
+import 'package:flutter_projet/calcul_promotion/calcul_promotion_page.dart';
 import 'package:flutter_projet/convertion_aires/convertion_aires.dart';
-import 'package:flutter_projet/convertion_distance/convertion_distance.dart';
-import 'package:flutter_projet/convertion_informatique/convertion_informatique.dart';
-import 'package:flutter_projet/convertion_numerique/convertion_numerique.dart';
+import 'package:flutter_projet/convertion_distance/convertion_distance_page.dart';
+import 'package:flutter_projet/convertion_informatique/convertion_informatique_page.dart';
+import 'package:flutter_projet/convertion_numerique/convertion_numerique_page.dart';
 import 'package:flutter_projet/convertion_temp/convertion_temp.dart';
 import 'package:flutter_projet/date/date_page.dart';
 import 'package:flutter_projet/home/feature.dart';
@@ -27,18 +27,18 @@ class _HomePageState extends State<HomePage> {
     Feature(
         "Convertion Informatique",
         Icons.sd_storage_outlined,
-        ConvertionInformatique('Convertion Informatique'),
+        ConvertionInformatiquePage('Convertion Informatique'),
         TransitionType.scale),
     Feature("Calcul Date de Naissance", Icons.cake_outlined,
         AgePage("Calcul Date de Naissance"), TransitionType.fade),
     Feature("Calcul de Promotion", Icons.wallet_giftcard_outlined,
-        CalculPromotion('Calcul de Promotion'), TransitionType.slide),
+        CalculPromotionPage('Calcul de Promotion'), TransitionType.slide),
     Feature("Différence de Date", Icons.today_outlined,
         DatePage("Différence de Date"), TransitionType.fade),
     Feature("Convertion de Distance", Icons.architecture,
-        ConvertionDistance('Convertion de Distance'), TransitionType.slide),
+        ConvertionDistancePage('Convertion de Distance'), TransitionType.slide),
     Feature("Convertion Numérique", Icons.calculate_outlined,
-        ConvertionNumerique("Convertion Numérique"), TransitionType.scale),
+        ConvertionNumeriquePage("Convertion Numérique"), TransitionType.scale),
     Feature("Convertion d\'Aires", Icons.map_outlined,
         ConvertionAires('Convertion d\'Aires'), TransitionType.fade),
     Feature("Convertion de Température", Icons.device_thermostat,
