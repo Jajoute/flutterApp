@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 
 
-class ConvertionAires extends StatefulWidget {
+class ConvertionAiresPage extends StatefulWidget {
 
   final String title;
-  ConvertionAires(this.title);
+  ConvertionAiresPage(this.title);
 
   @override
   _ConvertionAires createState() => _ConvertionAires();
 }
 
-class _ConvertionAires extends State<ConvertionAires> {
+class _ConvertionAires extends State<ConvertionAiresPage> {
   String inLabelValue, outLabelValue;
   List<String> labels =['cm²','m²','km²','hectare','acre'];
   TextEditingController inController, outController;
