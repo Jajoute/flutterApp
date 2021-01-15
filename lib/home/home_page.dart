@@ -1,22 +1,15 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_projet/age/age_page.dart';
 import 'package:flutter_projet/audio_player/audio_player_page_.dart';
-import 'package:flutter_projet/calcul_promotion/calcul_promotion.dart';
+import 'package:flutter_projet/calcul_promotion/calcul_promotion_page.dart';
 import 'package:flutter_projet/convertion_aires/convertion_aires_page.dart';
-import 'package:flutter_projet/convertion_distance/convertion_distance.dart';
-import 'package:flutter_projet/convertion_informatique/convertion_informatique.dart';
-import 'package:flutter_projet/convertion_numerique/convertion_numerique.dart';
-
+import 'package:flutter_projet/convertion_distance/convertion_distance_page.dart';
+import 'package:flutter_projet/convertion_informatique/convertion_informatique_page.dart';
+import 'package:flutter_projet/convertion_numerique/convertion_numerique_page.dart';
 import 'package:flutter_projet/convertion_temp/convertion_temp_page.dart';
-import 'package:flutter_projet/date/date_page.dart';
-
-import 'package:flutter_projet/home/feature.dart';
-import 'package:flutter_projet/date/date_page.dart';
+import 'package:flutter_projet/date/date_page_page.dart';
 import 'package:flutter_projet/home/model/feature.dart';
 import 'package:flutter_projet/storage/shared_pref_storage_repository.dart';
-import 'package:flutter_projet/storage/storage_repository.dart';
 import 'package:flutter_projet/convertion_romain/convertion_romain_page.dart';
 
 class HomePage extends StatefulWidget {

@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 
 
 
-
 class ConvertionAiresPage extends StatefulWidget {
 
   final String title;
-
   ConvertionAiresPage(this.title);
 
   @override
@@ -15,10 +13,8 @@ class ConvertionAiresPage extends StatefulWidget {
 
 class _ConvertionAires extends State<ConvertionAiresPage> {
   String inLabelValue, outLabelValue;
-
   List<String> labels =['cm²','m²','km²','hectare','acre'];
   TextEditingController inController, outController;
-
   double inRes, outRes;
 
   @override
@@ -71,7 +67,6 @@ class _ConvertionAires extends State<ConvertionAiresPage> {
   @override
   Widget build(BuildContext context) {
 
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -85,10 +80,6 @@ class _ConvertionAires extends State<ConvertionAiresPage> {
 /////////////////////////////////////////////////////
             DropdownButton(
               value : inLabelValue,
-
-            DropdownButton(
-              value: inLabelValue,
-
               icon: Icon(Icons.arrow_drop_down),
               iconSize: 24,
               elevation: 16,
@@ -110,23 +101,18 @@ class _ConvertionAires extends State<ConvertionAiresPage> {
                 );
               }).toList(),
             ),
- 
 //////////////////////////////////////////////////////
 //TEXT FIELD WITH INPUT VALUE
 /////////////////////////////////////////////////////
-
             SizedBox(
               width: 200,
               height: 60,
               child: TextField(
                 decoration: InputDecoration(
-
                     border: InputBorder.none,
                     labelText: 'Valeur à convertir'
                 ),
-     
-                onChanged: (v) {
-
+                onChanged: (v){
                   setState(() {
                     inRes = double.parse(v);
                     fromInToOut();
@@ -135,13 +121,11 @@ class _ConvertionAires extends State<ConvertionAiresPage> {
                 controller: inController,
               ),
             ),
-
 //////////////////////////////////////////////////////
 //DROP DOWN BUTTON WITH INPUT VALUE
 /////////////////////////////////////////////////////
-                 
             DropdownButton(
-              value: outLabelValue,
+              value : outLabelValue,
               icon: Icon(Icons.arrow_drop_down),
               iconSize: 24,
               elevation: 16,
@@ -163,23 +147,18 @@ class _ConvertionAires extends State<ConvertionAiresPage> {
                 );
               }).toList(),
             ),
-
 //////////////////////////////////////////////////////
 //TEXT FIELD WITH OUTPUT VALUE
 /////////////////////////////////////////////////////
-
-              
             SizedBox(
               width: 200,
               height: 60,
               child: TextField(
                 decoration: InputDecoration(
-
                     border: InputBorder.none,
                     labelText: 'Résultat'
                 ),
                 onChanged: (v){
-
                   setState(() {
                     outRes = double.parse(v);
                     fromOutToIn();
@@ -189,12 +168,10 @@ class _ConvertionAires extends State<ConvertionAiresPage> {
               ),
             ),
 
-
           ],
 
         ),
       ),
     );
   }
- 
 }
